@@ -16,7 +16,7 @@ nav:
   - Day 2:
     - Univalence: day-2/1-univalence.rzk.md
     - Sets and Logic in HoTT: day-2/2-sets-and-logic.rzk.md
-    - Exercises: day-2/3-exercises.rzk.md
+    - Exercises: day-2/3-hott-exercises.rzk.md
     - Simplicial HoTT: day-2/4-simplicial-types.rzk.md
 
 markdown_extensions:

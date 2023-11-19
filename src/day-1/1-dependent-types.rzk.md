@@ -1,5 +1,10 @@
 # Dependent types
 
+!!! info "Reference material"
+
+    This page is mostly based on the introduction of dependent types in the HoTT Book (Sections 1.2–1.6),
+    immediately introducing corresponding formalizations in Rzk and noting some differences.
+
 ```rzk
 #lang rzk-1
 ```
@@ -7,7 +12,7 @@
 We now proceed to look at the primitives in Rzk
 for working with dependent types.
 
-### Functions
+## Functions
 
 The type `#!rzk (x : A) → B x` is the type of (dependent)
 functions with an argument of type `A` and, for each input `x`,
@@ -18,7 +23,7 @@ consider the identity function:
 
 ```rzk
 #define identity
-  : (A : U) → (x : A) → A
+  : ( A : U) → (x : A) → A
   := \ A x → x
 ```
 
@@ -28,7 +33,7 @@ without providing its name:
 
 ```rzk
 #define identity₁
-  : (A : U) → A → A
+  : ( A : U) → A → A
   := \ A x → x
 ```
 
@@ -38,7 +43,7 @@ and omitting it in the lambda abstraction:
 
 ```rzk
 #define identity₂
-  (A : U)
+  ( A : U)
   : A → A
   := \ x → x
 ```
@@ -48,8 +53,388 @@ although this probably does not increase readability anymore:
 
 ```rzk
 #define identity₃
-  (A : U)
-  (x : A)
+  ( A : U)
+  ( x : A)
   : A
   := x
 ```
+
+Another, less trivial example of a dependent function is
+the one that swaps the arguments of another function:
+
+```rzk
+#define swap
+  ( A B C : U)
+  : (A → B → C) → (B → A → C)
+  := \ f → \ b a -> f a b
+```
+
+## Product types
+
+Rzk does not have built-in product types, since they are a special case of Σ-types,
+which we will discuss soon. For now, we give definition of product types:
+
+```rzk
+#define prod
+  ( A B : U)
+  : U
+  := Σ (_ : A), B
+```
+
+The type `#!rzk prod A B` corresponds to the product type $A \times B$.
+The `#!rzk Unit` type corresponds to the type $\mathbf{1}$.
+
+The intended elements of `#!rzk prod A B` are only pairs `#!rzk (a, b) : prod A B`
+where `#!rzk a : A` and `#!rzk b : B`. Similarly, intended element of `#!rzk Unit`
+is only `#!rzk unit`. However, formally, this is not immediately true and instead
+is a theorem that we can prove.
+
+### Remark on type formers
+
+Formally, we have the following constituents of the definition for product types and function types
+(for comparison):
+
+1. **Type formation**:
+
+    - `#!rzk prod A B` is a type whenever `A` and `B` are types
+    - `#!rzk A → B` is a type whenever `A` and `B` are types
+
+2. **Constructors (introduction rules)**:
+
+    - `#!rzk (x , y)` is a term of type `#!rzk prod A B` whenever `#!rzk x : A` and `#!rzk y : B`
+    - `#!rzk \ x → y` is a term of type `#!rzk A → B` whenever for any `#!rzk x : A` we have `#!rzk y : B`
+
+3. **Eliminators (elimination rules)**:
+
+    - Given `#!rzk z : prod A B`, we can _project_ the first and second components:
+        - `#!rzk first z : A` and `#!rzk second z : B`
+        - it is also possible to pattern match (deconstruct) in a function argument or when introducing a parameter, e.g.
+
+            ```rzk
+            #define swap-prod₁
+              ( A B : U)
+              : prod A B → prod B A
+              := \ (x , y) → (y , x)
+
+            #define swap-prod₂
+              ( A B : U)
+              ( (x , y) : prod A B)
+              : prod B A
+              := ( y , x)
+            ```
+
+        - more generally, eliminators come in a form of an _induction principle_, which we will discuss below
+          and can be defined in Rzk in terms of pattern matching or `#!rzk first` and `#!rzk second`:
+
+            ```rzk
+            #define ind-prod
+              ( A B : U)
+              ( C : prod A B → U)
+              ( f : (a : A) → (b : B) → C (a , b))
+              : (z : prod A B) → C z
+              := \ (a , b) → f a b
+            ```
+
+    - Given `#!rzk f : A → B`, we can _apply_ it to an argument of type `#!rzk a : A`:
+        - `#!rzk f a : B`
+
+    !!! warning "Built-in eliminators in Rzk"
+
+        Built-in eliminators in Rzk need to be **always** fully applied (e.g. `#!rzk first` without an argument is invalid syntax!).
+        Technically, this corresponds with the "second presentation" of type theory in Appendix A.2 of the HoTT Book.
+        In practice, this is not always convenient for users, as we often want to curry some of these built-ins,
+        so wrapper functions are introduced (by users), for example:
+
+        ```rzk
+        #define pr₁
+          ( A B : U)
+          : prod A B → A
+          := \ p → first p
+        ```
+
+4. **Computation rules**:
+
+    - Projecting from a pair is computed as follows for any `#!rzk x : A` and `#!rzk y : B`:
+        - `#!rzk first (x , y) ≡ x`
+        - `#!rzk second (x , y) ≡ y`
+    - Applying an lambda abstraction is computed by substituting the argument into a body:
+      - `#!rzk (\ x → y) a ≡ y{x ↦ a}` when `#!rzk a : A` and for all `#!rzk x : A`, `#!rzk y : B`.
+
+5. **Uniqueness principle (optional)**:
+
+    - For any `#!rzk z : prod A B`, we have `#!rzk z ≡ (first z, second z)`
+      - This holds definitionally for product types and Σ-types in Rzk, but is provable in a weaker (propositional) form in HoTT Book
+    - For any two functions `#!rzk f : A → B` and `#!rzk g : A → B`, we have `#!rzk f ≡ g` iff for any `#!rzk x : A` we have `#!rzk f x ≡ g x`
+      - This is taken in a weaker form as an Axiom 2.9.3 in HoTT Book and can also be postulated or assumed locally in Rzk (e.g. see [Function extensionality](https://rzk-lang.github.io/sHoTT/hott/03-equivalences.rzk/#function-extensionality) in the sHoTT project)
+
+### Recursion principle
+
+Following the HoTT Book, for each type former we can formalize its _recursion principle_.
+A recursion principle for type `#!rzk T` is a function that allows to produce
+a result of arbitrary type `#!rzk C` from a value of type `#!rzk T`:
+
+```{unchecked .rzk}
+#define rec-T
+  ( C : U)
+  -- ... (parameters to the recursion principle)
+  : T → C
+```
+
+For example, for the product type `#!rzk prod A B`, recursion principle looks like this:
+
+```rzk
+#define rec-prod
+  ( A B : U)
+  ( C : U)
+  ( f : A → B → C)
+  : prod A B → C
+  := \ (a , b) → f a b
+```
+
+For the `#!rzk Unit` type, recursion principle is trivial:
+
+```rzk
+#define rec-Unit
+  ( C : U)
+  ( c : C)
+  : Unit → C
+  := \ unit → c
+```
+
+### Induction principle
+
+To define a _dependent_ function out of a type, we use its _induction principle_,
+which can be seen as a dependent version of the recursion principle.
+An induction principle for type `#!rzk T` is a function that allows to produce
+a result of arbitrary type `#!rzk C z` from a value `#!rzk z : T`:
+
+```{unchecked .rzk}
+#define ind-T
+  ( C : T → U)
+  -- ... (parameters to the induction principle)
+  : (z : T) → C z
+```
+
+For example, for the product type `#!rzk prod A B`, induction principle looks like this:
+
+```rzk
+#define ind-prod
+  ( A B : U)
+  ( C : prod A B  → U)
+  ( f : (a : A) → (b : B) → C (a , b))
+  : (z : prod A B) → C z
+  := \ (a , b) → f a b
+```
+
+We can use `#!rzk ind-prod` to prove the uniqueness principle for products.
+Here we use the identity type, which we will cover later, but for now it is
+sufficient to know that there is always an element `#!rzk refl_{x} : x =_{A} x`
+for any `#!rzk x : A`.
+
+```rzk
+#define uniq-prod
+  (A B : U)
+  (z : prod A B)
+  : (first z, second z) =_{prod A B} z
+  := ind-prod A B
+      ( \ z → (first z, second z) =_{prod A B} z)
+      (\ a b → refl_{(a , b)})
+      z
+```
+
+Since in Rzk the uniqueness principle is builtin, a simpler proof also works:
+
+```rzk
+#define uniq-prod'
+  (A B : U)
+  (z : prod A B)
+  : (first z, second z) =_{prod A B} z
+  := refl_{z} -- works in Rzk, not in HoTT Book, since in Rzk we have (first z, second z) ≡ z
+```
+
+For the `#!rzk Unit` type, induction principle is trivial:
+
+```rzk
+#define ind-Unit
+  ( C : Unit → U)
+  ( c : C unit)
+  : (z : Unit) → C z
+  := \ unit → c
+```
+
+Unlike `#!rzk rec-Unit`, induction principle for `#!rzk Unit` is not useless,
+since it allows, for example, to prove the uniqueness principle:
+
+```rzk
+#define uniq-Unit
+  ( z : Unit)
+  : unit =_{Unit} z
+  := ind-Unit
+      ( \ z → unit =_{Unit} z)
+      ( refl_{unit})
+      z
+```
+
+Again, since Rzk has a builtin uniqueness principle for `#!rzk Unit`, a simpler proof also works:
+
+```rzk
+#define uniq-Unit'
+  ( z : Unit)
+  : unit =_{Unit} z
+  := refl_{z} -- works in Rzk, not in HoTT Book, since in Rzk we have unit ≡ z
+```
+
+## Dependent pair types (Σ-types)
+
+A straightforward generalization of product types to dependent pairs `#!rzk Σ (a : A), B a`
+where `#!rzk A` is a type and `#!rzk B : A → U` is a type family indexed in `#!rzk A`.
+
+The indended values of `#!rzk Σ (a : A), B a` are pairs `#!rzk (a , b)` of
+terms `#!rzk a : A` and `#!rzk b : B a`. Note that the type of the second component
+may depend on the value of the first component.
+When the type family `#!rzk B` is constant, e.g. `#!rzk (\ _ → C)`,
+then `#!rzk Σ (a : A), B a` becomes exactly the product type `#!rzk prod A C`.
+
+To eliminate dependent pairs, we use `#!rzk first`, `#!rzk second`, or pattern
+matching on pairs. However, the types of projections are less obvious compared
+to the case of product types.
+
+### Projections
+
+The first projection can be easily defined in terms of pattern matching:
+
+```rzk
+#define pr₁
+  ( A : U)
+  ( B : A → U)
+  : (Σ (a : A), B a) → A
+  := \ (a , _) → a
+```
+
+However, second projection requires some care. For instance, we might try this:
+
+```{unchecked .rzk}
+#define pr₂
+  ( A : U)
+  ( B : A → U)
+  : (Σ (a : A), B a) → B a
+  := \ (_ , b) → b
+```
+
+```
+undefined variable: a
+```
+
+We get the `undefined variable` error since `a` is not visible outside of Σ-type definition.
+To access it, we need a dependent function:
+
+```rzk
+#define pr₂
+  ( A : U)
+  ( B : A → U)
+  : (z : Σ (a : A), B a) → B (pr₁ A B z)
+  := \ (_ , b) → b
+```
+
+In Rzk, it is sometimes more convenient to talk about Σ-types as "total" types (as in "total spaces"):
+
+```rzk
+#define total-type
+  ( A : U)
+  ( B : A → U)
+  : U
+  := Σ (a : A), B a
+```
+
+We can use pattern matching in the function type and this new definition to write
+second projection slightly differently:
+
+```rzk
+#define pr₂'
+  ( A : U)
+  ( B : A → U)
+  : ((a, _) : total-type A B) → B a
+  := pr₂ A B
+```
+
+### Recursion and induction principles
+
+The recursion principle for Σ-types is a simple generalization of
+the recursion principle for product types:
+
+```rzk
+#define rec-Σ
+  ( A : U)
+  ( B : A → U)
+  ( C : U)
+  ( f : (a : A) → B a → C)
+  : total-type A B → C
+  := \ (a , b) → f a b
+```
+
+The induction principle is, again, a generalization of the recursion
+principle to dependent types:
+
+```rzk
+#define ind-Σ
+  ( A : U)
+  ( B : A → U)
+  ( C : total-type A B → U)
+  ( f : (a : A) → (b : B a) → C (a , b))
+  : (z : total-type A B) → C z
+  := \ (a , b) → f a b
+```
+
+As before, using `#!rzk ind-Σ` we may prove the uniqueness principle, now for Σ-types:
+
+```rzk
+#define uniq-Σ
+  ( A : U)
+  ( B : A → U)
+  ( z : total-type A B)
+  : (pr₁ A B z, pr₂ A B z) =_{total-type A B} z
+  := ind-Σ A B
+      ( \ z → (pr₁ A B z, pr₂ A B z) =_{total-type A B} z)
+      ( \ a b → refl_{(a , b)})
+      z
+```
+
+And again, Rzk can accept a simpler proof, since uniqueness for Σ-types is already built into it:
+
+```rzk
+#define uniq-Σ'
+  ( A : U)
+  ( B : A → U)
+  ( z : total-type A B)
+  : (pr₁ A B z, pr₂ A B z) =_{total-type A B} z
+  := refl_{z} -- works in Rzk, but not in HoTT Book
+```
+
+### Type-theoretic "axiom" of choice
+
+Using `#!rzk ind-Σ` we can also prove a type-theoretic axiom of choice:
+
+```rzk
+#define AxiomOfChoice
+  : U
+  := (A B : U)
+    → (R : A → B → U)
+    → ((x : A) → Σ (y : B), R x y)
+    → (Σ (f : A → B), (x : A) → R x (f x))
+```
+
+You are encouraged to try proving this yourself first.
+
+If you encounter problems, try looking for the proof in the HoTT Book Section 1.6 (page 32).
+
+If you still have issues formalizing it in Rzk, you may peek here:
+
+??? abstract "Proof of the type theoretic axiom of choice"
+
+    ```rzk
+    #define axiom-of-choice
+      : AxiomOfChoice
+      := \ _ B R k →
+        ( \ a → pr₁ B (R a) (k a)
+        , \ a → pr₂ B (R a) (k a))
+    ```

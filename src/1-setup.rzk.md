@@ -24,7 +24,7 @@ To check the formalisations in this demo you can:
 2. Use an online playground at <https://rzk-lang.github.io/rzk/v0.6.7/playground/>
    (and copy-paste code blocks there one by one)
 
-### Formalisation project structure
+## Formalisation project structure
 
 Usually, formalisation projects in Rzk consist of multiple Rzk (or literate Rzk) files.
 For example, this demo project has the following structure:
@@ -87,7 +87,7 @@ sHoTT
         └── 12-cocartesian.rzk.md
 ```
 
-### Running Rzk
+## Running Rzk
 
 To typecheck files, at the moment you have to run the following command in
 the terminal:
@@ -114,7 +114,7 @@ rzk typecheck FILE-1 FILE-2 ... FILE-N
     Starting filenames with numbers (as in the examples above) helps automatically
     achieve the desired order when using wildcars (e.g. `rzk typecheck src/*.rzk.md`), although in a slightly inelegant way.
 
-### Literate Rzk
+## Literate Rzk
 
 If you are familiar with Markdown, then the recommended approach is to use [literate](https://en.wikipedia.org/wiki/Literate_programming) Rzk Markdown,
 so that conventional Markdown rendering tools can be used to produce
@@ -174,3 +174,9 @@ We will use the following Unicode symbols:
 
 We use ASCII versions for `TOP` and `BOT` since `⊤` and `⊥` do not read better
 in the code.
+
+### Code style
+
+There is currently one large-ish project in Rzk — simplicial HoTT formalization at <https://rzk-lang.github.io/sHoTT/>.
+This project and some smaller ones adhere to [the style guide](https://rzk-lang.github.io/sHoTT/STYLEGUIDE/)
+which is largely influenced by `agda-unimath` and written down mostly by [Fredrik Bakke](https://github.com/fredrik-bakke).
