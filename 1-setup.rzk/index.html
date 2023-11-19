@@ -328,32 +328,26 @@
     Installing Rzk
   </a>
   
-    <nav class="md-nav" aria-label="Installing Rzk">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
+</li>
+      
+        <li class="md-nav__item">
   <a href="#formalisation-project-structure" class="md-nav__link">
     Formalisation project structure
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#running-rzk" class="md-nav__link">
     Running Rzk
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#literate-rzk" class="md-nav__link">
     Literate Rzk
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -368,6 +362,13 @@
           <li class="md-nav__item">
   <a href="#unicode" class="md-nav__link">
     Unicode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-style" class="md-nav__link">
+    Code style
   </a>
   
 </li>
@@ -610,7 +611,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../day-2/3-exercises.rzk.md" class="md-nav__link">
+      <a href="../day-2/3-hott-exercises.rzk/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -700,7 +701,7 @@ and breaking changes should be expected with further releases.</p>
    (and copy-paste code blocks there one by one)</p>
 </li>
 </ol>
-<h3 id="formalisation-project-structure">Formalisation project structure<a class="headerlink" href="#formalisation-project-structure" title="Permanent link">&para;</a></h3>
+<h2 id="formalisation-project-structure">Formalisation project structure<a class="headerlink" href="#formalisation-project-structure" title="Permanent link">&para;</a></h2>
 <p>Usually, formalisation projects in Rzk consist of multiple Rzk (or literate Rzk) files.
 For example, this demo project has the following structure:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>bmstu-rzk-demo-2023
@@ -756,7 +757,7 @@ has its formalisations further split into subdirectories:</p>
 </span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>        ├── 10-rezk-types.rzk.md
 </span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>        └── 12-cocartesian.rzk.md
 </span></code></pre></div>
-<h3 id="running-rzk">Running Rzk<a class="headerlink" href="#running-rzk" title="Permanent link">&para;</a></h3>
+<h2 id="running-rzk">Running Rzk<a class="headerlink" href="#running-rzk" title="Permanent link">&para;</a></h2>
 <p>To typecheck files, at the moment you have to run the following command in
 the terminal:</p>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>rzk<span class="w"> </span>typecheck
@@ -776,7 +777,7 @@ you want them to be checked, as dependencies between files
 <p>Starting filenames with numbers (as in the examples above) helps automatically
 achieve the desired order when using wildcars (e.g. <code>rzk typecheck src/*.rzk.md</code>), although in a slightly inelegant way.</p>
 </div>
-<h3 id="literate-rzk">Literate Rzk<a class="headerlink" href="#literate-rzk" title="Permanent link">&para;</a></h3>
+<h2 id="literate-rzk">Literate Rzk<a class="headerlink" href="#literate-rzk" title="Permanent link">&para;</a></h2>
 <p>If you are familiar with Markdown, then the recommended approach is to use <a href="https://en.wikipedia.org/wiki/Literate_programming">literate</a> Rzk Markdown,
 so that conventional Markdown rendering tools can be used to produce
 readable documentation from the formalisation files.</p>
@@ -820,6 +821,10 @@ We will use the following Unicode symbols:</p>
 </ul>
 <p>We use ASCII versions for <code>TOP</code> and <code>BOT</code> since <code>⊤</code> and <code>⊥</code> do not read better
 in the code.</p>
+<h3 id="code-style">Code style<a class="headerlink" href="#code-style" title="Permanent link">&para;</a></h3>
+<p>There is currently one large-ish project in Rzk — simplicial HoTT formalization at <a href="https://rzk-lang.github.io/sHoTT/">https://rzk-lang.github.io/sHoTT/</a>.
+This project and some smaller ones adhere to <a href="https://rzk-lang.github.io/sHoTT/STYLEGUIDE/">the style guide</a>
+which is largely influenced by <code>agda-unimath</code> and written down mostly by <a href="https://github.com/fredrik-bakke">Fredrik Bakke</a>.</p>
 <div class="footnote">
 <hr />
 <ol>

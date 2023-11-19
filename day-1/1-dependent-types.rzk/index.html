@@ -380,6 +380,74 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#product-types" class="md-nav__link">
+    Product types
+  </a>
+  
+    <nav class="md-nav" aria-label="Product types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remark-on-type-formers" class="md-nav__link">
+    Remark on type formers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recursion-principle" class="md-nav__link">
+    Recursion principle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#induction-principle" class="md-nav__link">
+    Induction principle
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependent-pair-types-types" class="md-nav__link">
+    Dependent pair types (Σ-types)
+  </a>
+  
+    <nav class="md-nav" aria-label="Dependent pair types (Σ-types)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#projections" class="md-nav__link">
+    Projections
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recursion-and-induction-principles" class="md-nav__link">
+    Recursion and induction principles
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-theoretic-axiom-of-choice" class="md-nav__link">
+    Type-theoretic "axiom" of choice
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -558,7 +626,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../day-2/3-exercises.rzk.md" class="md-nav__link">
+      <a href="../../day-2/3-hott-exercises.rzk/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -623,43 +691,360 @@
 
 
 <h1 id="dependent-types">Dependent types<a class="headerlink" href="#dependent-types" title="Permanent link">&para;</a></h1>
+<div class="admonition info">
+<p class="admonition-title">Reference material</p>
+<p>This page is mostly based on the introduction of dependent types in the HoTT Book (Sections 1.2–1.6),
+immediately introducing corresponding formalizations in Rzk and noting some differences.</p>
+</div>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">#lang</span><span class="p"> </span><span class="s">rzk-1</span>
 </span></code></pre></div>
 <p>We now proceed to look at the primitives in Rzk
 for working with dependent types.</p>
-<h3 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h3>
+<h2 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
 <p>The type <code class="language-rzk highlight"><span class="p">(</span>x <span class="p">:</span><span class="err"> A) → B x</span></code> is the type of (dependent)
 functions with an argument of type <code>A</code> and, for each input <code>x</code>,
 the output type <code>B x</code>.</p>
 <p>As a simple example of a dependent function,
 consider the identity function:</p>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:identity" id="define:identity" style="visibility: visible; position: relative; color: inherit">identity</a></span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="err">  : </span><span class="p">(</span>A <span class="p">:</span><span class="err"> U) → </span><span class="p">(</span>x <span class="p">:</span><span class="err"> A) → A</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="err">  : </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U) → </span><span class="p">(</span>x <span class="p">:</span><span class="err"> A) → A</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="err">  := </span><span class="p">\ </span>A x <span class="err">→ x</span>
 </span></code></pre></div>
 <p>Since we are not using <code>x</code> in the type of <code>identity</code>,
 we can simply write the type of the argument,
 without providing its name:</p>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:identity₁" id="define:identity₁" style="visibility: visible; position: relative; color: inherit">identity₁</a></span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="err">  : </span><span class="p">(</span>A <span class="p">:</span><span class="err"> U) → A → A</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="err">  : </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U) → A → A</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="err">  := </span><span class="p">\ </span>A x <span class="err">→ x</span>
 </span></code></pre></div>
 <p>We can write this definition differently,
 by putting <code class="language-rzk highlight"><span class="p">(</span>A <span class="p">:</span><span class="err"> U)</span></code> into parameters (before <code>:</code>),
 and omitting it in the lambda abstraction:</p>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:identity₂" id="define:identity₂" style="visibility: visible; position: relative; color: inherit">identity₂</a></span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="err">  </span><span class="p">(</span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="err">  : A → A</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="err">  := </span><span class="p">\ </span>x <span class="err">→ x</span>
 </span></code></pre></div>
 <p>We could also move <code>x</code> into parameters as well,
 although this probably does not increase readability anymore:</p>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:identity₃" id="define:identity₃" style="visibility: visible; position: relative; color: inherit">identity₃</a></span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="err">  </span><span class="p">(</span>A <span class="p">:</span><span class="err"> U)</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="err">  </span><span class="p">(</span>x <span class="p">:</span><span class="err"> A)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="err">  </span><span class="p">( </span>x <span class="p">:</span><span class="err"> A)</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="err">  : A</span>
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="err">  := x</span>
 </span></code></pre></div>
+<p>Another, less trivial example of a dependent function is
+the one that swaps the arguments of another function:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:swap" id="define:swap" style="visibility: visible; position: relative; color: inherit">swap</a></span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="err">  </span><span class="p">( </span>A B C <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="err">  : (A → B → C) → (B → A → C)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="err">  := </span><span class="p">\ </span>f <span class="err">→ </span><span class="p">\ </span>b a <span class="err">-&gt; f a b</span>
+</span></code></pre></div>
+<h2 id="product-types">Product types<a class="headerlink" href="#product-types" title="Permanent link">&para;</a></h2>
+<p>Rzk does not have built-in product types, since they are a special case of Σ-types,
+which we will discuss soon. For now, we give definition of product types:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:prod" id="define:prod" style="visibility: visible; position: relative; color: inherit">prod</a></span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="err">  </span><span class="p">( </span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="err">  : U</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="err">  := </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>_ <span class="p">:</span><span class="err"> A), B</span>
+</span></code></pre></div>
+<p>The type <code class="language-rzk highlight"><span class="err">prod A B</span></code> corresponds to the product type <span class="arithmatex">\(A \times B\)</span>.
+The <code class="language-rzk highlight"><span class="kt">Unit</span></code> type corresponds to the type <span class="arithmatex">\(\mathbf{1}\)</span>.</p>
+<p>The intended elements of <code class="language-rzk highlight"><span class="err">prod A B</span></code> are only pairs <code class="language-rzk highlight"><span class="err">(a, b) : prod A B</span></code>
+where <code class="language-rzk highlight"><span class="err">a : A</span></code> and <code class="language-rzk highlight"><span class="err">b : B</span></code>. Similarly, intended element of <code class="language-rzk highlight"><span class="kt">Unit</span></code>
+is only <code class="language-rzk highlight"><span class="s">unit</span></code>. However, formally, this is not immediately true and instead
+is a theorem that we can prove.</p>
+<h3 id="remark-on-type-formers">Remark on type formers<a class="headerlink" href="#remark-on-type-formers" title="Permanent link">&para;</a></h3>
+<p>Formally, we have the following constituents of the definition for product types and function types
+(for comparison):</p>
+<ol>
+<li>
+<p><strong>Type formation</strong>:</p>
+<ul>
+<li><code class="language-rzk highlight"><span class="err">prod A B</span></code> is a type whenever <code>A</code> and <code>B</code> are types</li>
+<li><code class="language-rzk highlight"><span class="err">A → B</span></code> is a type whenever <code>A</code> and <code>B</code> are types</li>
+</ul>
+</li>
+<li>
+<p><strong>Constructors (introduction rules)</strong>:</p>
+<ul>
+<li><code class="language-rzk highlight"><span class="err">(x , y)</span></code> is a term of type <code class="language-rzk highlight"><span class="err">prod A B</span></code> whenever <code class="language-rzk highlight"><span class="err">x : A</span></code> and <code class="language-rzk highlight"><span class="err">y : B</span></code></li>
+<li><code class="language-rzk highlight"><span class="p">\ </span>x <span class="err">→ y</span></code> is a term of type <code class="language-rzk highlight"><span class="err">A → B</span></code> whenever for any <code class="language-rzk highlight"><span class="err">x : A</span></code> we have <code class="language-rzk highlight"><span class="err">y : B</span></code></li>
+</ul>
+</li>
+<li>
+<p><strong>Eliminators (elimination rules)</strong>:</p>
+<ul>
+<li>
+<p>Given <code class="language-rzk highlight"><span class="err">z : prod A B</span></code>, we can <em>project</em> the first and second components:</p>
+<ul>
+<li><code class="language-rzk highlight"><span class="s">first</span><span class="err"> z : A</span></code> and <code class="language-rzk highlight"><span class="s">second</span><span class="err"> z : B</span></code></li>
+<li>
+<p>it is also possible to pattern match (deconstruct) in a function argument or when introducing a parameter, e.g.</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:swap-prod₁" id="define:swap-prod₁" style="visibility: visible; position: relative; color: inherit">swap-prod₁</a></span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="err">  </span><span class="p">( </span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="err">  : prod A B → prod B A</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="err">  := \ (x , y) → (y , x)</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:swap-prod₂" id="define:swap-prod₂" style="visibility: visible; position: relative; color: inherit">swap-prod₂</a></span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="err">  </span><span class="p">( </span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="err">  ( (x , y) : prod A B)</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="err">  : prod B A</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="err">  := ( y , x)</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>more generally, eliminators come in a form of an <em>induction principle</em>, which we will discuss below
+  and can be defined in Rzk in terms of pattern matching or <code class="language-rzk highlight"><span class="s">first</span></code> and <code class="language-rzk highlight"><span class="s">second</span></code>:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:ind-prod" id="define:ind-prod" style="visibility: visible; position: relative; color: inherit">ind-prod</a></span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="err">  </span><span class="p">( </span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> prod A B → U)</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="err">  </span><span class="p">( </span>f <span class="p">:</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A) → </span><span class="p">(</span>b <span class="p">:</span><span class="err"> B) → C (a , b))</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="err">  : </span><span class="p">(</span>z <span class="p">:</span><span class="err"> prod A B) → C z</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="err">  := \ (a , b) → f a b</span>
+</span></code></pre></div>
+</li>
+</ul>
+</li>
+<li>
+<p>Given <code class="language-rzk highlight"><span class="err">f : A → B</span></code>, we can <em>apply</em> it to an argument of type <code class="language-rzk highlight"><span class="err">a : A</span></code>:</p>
+<ul>
+<li><code class="language-rzk highlight"><span class="err">f a : B</span></code></li>
+</ul>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Built-in eliminators in Rzk</p>
+<p>Built-in eliminators in Rzk need to be <strong>always</strong> fully applied (e.g. <code class="language-rzk highlight"><span class="s">first</span></code> without an argument is invalid syntax!).
+Technically, this corresponds with the "second presentation" of type theory in Appendix A.2 of the HoTT Book.
+In practice, this is not always convenient for users, as we often want to curry some of these built-ins,
+so wrapper functions are introduced (by users), for example:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:pr₁" id="define:pr₁" style="visibility: visible; position: relative; color: inherit">pr₁</a></span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="err">  </span><span class="p">( </span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="err">  : prod A B → A</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="err">  := </span><span class="p">\ </span>p <span class="err">→ </span><span class="s">first</span><span class="err"> p</span>
+</span></code></pre></div>
+</div>
+</li>
+<li>
+<p><strong>Computation rules</strong>:</p>
+<ul>
+<li>Projecting from a pair is computed as follows for any <code class="language-rzk highlight"><span class="err">x : A</span></code> and <code class="language-rzk highlight"><span class="err">y : B</span></code>:<ul>
+<li><code class="language-rzk highlight"><span class="s">first</span><span class="err"> (x , y) </span><span class="sx">≡</span><span class="err"> x</span></code></li>
+<li><code class="language-rzk highlight"><span class="s">second</span><span class="err"> (x , y) </span><span class="sx">≡</span><span class="err"> y</span></code></li>
+</ul>
+</li>
+<li>Applying an lambda abstraction is computed by substituting the argument into a body:</li>
+<li><code class="language-rzk highlight"><span class="err">(</span><span class="p">\ </span>x <span class="err">→ y) a </span><span class="sx">≡</span><span class="err"> y{x ↦ a}</span></code> when <code class="language-rzk highlight"><span class="err">a : A</span></code> and for all <code class="language-rzk highlight"><span class="err">x : A</span></code>, <code class="language-rzk highlight"><span class="err">y : B</span></code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Uniqueness principle (optional)</strong>:</p>
+<ul>
+<li>For any <code class="language-rzk highlight"><span class="err">z : prod A B</span></code>, we have <code class="language-rzk highlight"><span class="err">z </span><span class="sx">≡</span><span class="err"> (</span><span class="s">first</span><span class="err"> z, </span><span class="s">second</span><span class="err"> z)</span></code></li>
+<li>This holds definitionally for product types and Σ-types in Rzk, but is provable in a weaker (propositional) form in HoTT Book</li>
+<li>For any two functions <code class="language-rzk highlight"><span class="err">f : A → B</span></code> and <code class="language-rzk highlight"><span class="err">g : A → B</span></code>, we have <code class="language-rzk highlight"><span class="err">f </span><span class="sx">≡</span><span class="err"> g</span></code> iff for any <code class="language-rzk highlight"><span class="err">x : A</span></code> we have <code class="language-rzk highlight"><span class="err">f x </span><span class="sx">≡</span><span class="err"> g x</span></code></li>
+<li>This is taken in a weaker form as an Axiom 2.9.3 in HoTT Book and can also be postulated or assumed locally in Rzk (e.g. see <a href="https://rzk-lang.github.io/sHoTT/hott/03-equivalences.rzk/#function-extensionality">Function extensionality</a> in the sHoTT project)</li>
+</ul>
+</li>
+</ol>
+<h3 id="recursion-principle">Recursion principle<a class="headerlink" href="#recursion-principle" title="Permanent link">&para;</a></h3>
+<p>Following the HoTT Book, for each type former we can formalize its <em>recursion principle</em>.
+A recursion principle for type <code class="language-rzk highlight"><span class="err">T</span></code> is a function that allows to produce
+a result of arbitrary type <code class="language-rzk highlight"><span class="err">C</span></code> from a value of type <code class="language-rzk highlight"><span class="err">T</span></code>:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:rec-T" id="define:rec-T" style="visibility: visible; position: relative; color: inherit">rec-T</a></span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="err">  </span><span class="c">-- ... (parameters to the recursion principle)</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="err">  : T → C</span>
+</span></code></pre></div>
+<p>For example, for the product type <code class="language-rzk highlight"><span class="err">prod A B</span></code>, recursion principle looks like this:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:rec-prod" id="define:rec-prod" style="visibility: visible; position: relative; color: inherit">rec-prod</a></span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="err">  </span><span class="p">( </span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="err">  </span><span class="p">( </span>f <span class="p">:</span><span class="err"> A → B → C)</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="err">  : prod A B → C</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="err">  := \ (a , b) → f a b</span>
+</span></code></pre></div>
+<p>For the <code class="language-rzk highlight"><span class="kt">Unit</span></code> type, recursion principle is trivial:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:rec-Unit" id="define:rec-Unit" style="visibility: visible; position: relative; color: inherit">rec-Unit</a></span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="err">  </span><span class="p">( </span>c <span class="p">:</span><span class="err"> C)</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="err">  : Unit → C</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="err">  := </span><span class="p">\ </span>unit <span class="err">→ c</span>
+</span></code></pre></div>
+<h3 id="induction-principle">Induction principle<a class="headerlink" href="#induction-principle" title="Permanent link">&para;</a></h3>
+<p>To define a <em>dependent</em> function out of a type, we use its <em>induction principle</em>,
+which can be seen as a dependent version of the recursion principle.
+An induction principle for type <code class="language-rzk highlight"><span class="err">T</span></code> is a function that allows to produce
+a result of arbitrary type <code class="language-rzk highlight"><span class="err">C z</span></code> from a value <code class="language-rzk highlight"><span class="err">z : T</span></code>:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:ind-T" id="define:ind-T" style="visibility: visible; position: relative; color: inherit">ind-T</a></span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> T → U)</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="err">  </span><span class="c">-- ... (parameters to the induction principle)</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="err">  : </span><span class="p">(</span>z <span class="p">:</span><span class="err"> T) → C z</span>
+</span></code></pre></div>
+<p>For example, for the product type <code class="language-rzk highlight"><span class="err">prod A B</span></code>, induction principle looks like this:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:ind-prod" id="define:ind-prod" style="visibility: visible; position: relative; color: inherit">ind-prod</a></span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="err">  </span><span class="p">( </span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> prod A B  → U)</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="err">  </span><span class="p">( </span>f <span class="p">:</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A) → </span><span class="p">(</span>b <span class="p">:</span><span class="err"> B) → C (a , b))</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="err">  : </span><span class="p">(</span>z <span class="p">:</span><span class="err"> prod A B) → C z</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="err">  := \ (a , b) → f a b</span>
+</span></code></pre></div>
+<p>We can use <code class="language-rzk highlight"><span class="err">ind-prod</span></code> to prove the uniqueness principle for products.
+Here we use the identity type, which we will cover later, but for now it is
+sufficient to know that there is always an element <code class="language-rzk highlight"><span class="s">refl</span><span class="err">_{x} : x =_{A} x</span></code>
+for any <code class="language-rzk highlight"><span class="err">x : A</span></code>.</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:uniq-prod" id="define:uniq-prod" style="visibility: visible; position: relative; color: inherit">uniq-prod</a></span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="err">  </span><span class="p">(</span>z <span class="p">:</span><span class="err"> prod A B)</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="err">  : (</span><span class="s">first</span><span class="err"> z, </span><span class="s">second</span><span class="err"> z) =_{prod A B} z</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="err">  := ind-prod A B</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="err">      ( </span><span class="p">\ </span>z <span class="err">→ (</span><span class="s">first</span><span class="err"> z, </span><span class="s">second</span><span class="err"> z) =_{prod A B} z)</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="err">      (</span><span class="p">\ </span>a b <span class="err">→ </span><span class="s">refl</span><span class="err">_{(a , b)})</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="err">      z</span>
+</span></code></pre></div>
+<p>Since in Rzk the uniqueness principle is builtin, a simpler proof also works:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:uniq-prod&#39;" id="define:uniq-prod&#39;" style="visibility: visible; position: relative; color: inherit">uniq-prod&#39;</a></span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="err">  </span><span class="p">(</span>z <span class="p">:</span><span class="err"> prod A B)</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="err">  : (</span><span class="s">first</span><span class="err"> z, </span><span class="s">second</span><span class="err"> z) =_{prod A B} z</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="err">  := </span><span class="s">refl</span><span class="err">_{z} </span><span class="c">-- works in Rzk, not in HoTT Book, since in Rzk we have (first z, second z) ≡ z</span>
+</span></code></pre></div>
+<p>For the <code class="language-rzk highlight"><span class="kt">Unit</span></code> type, induction principle is trivial:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:ind-Unit" id="define:ind-Unit" style="visibility: visible; position: relative; color: inherit">ind-Unit</a></span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> Unit → U)</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="err">  </span><span class="p">( </span>c <span class="p">:</span><span class="err"> C </span><span class="s">unit</span><span class="err">)</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="err">  : </span><span class="p">(</span>z <span class="p">:</span><span class="err"> Unit) → C z</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="err">  := </span><span class="p">\ </span>unit <span class="err">→ c</span>
+</span></code></pre></div>
+<p>Unlike <code class="language-rzk highlight"><span class="err">rec-</span><span class="kt">Unit</span></code>, induction principle for <code class="language-rzk highlight"><span class="kt">Unit</span></code> is not useless,
+since it allows, for example, to prove the uniqueness principle:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:uniq-Unit" id="define:uniq-Unit" style="visibility: visible; position: relative; color: inherit">uniq-Unit</a></span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="err">  </span><span class="p">( </span>z <span class="p">:</span><span class="err"> Unit)</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="err">  : </span><span class="s">unit</span><span class="err"> =_{Unit} z</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="err">  := ind-</span><span class="kt">Unit</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="err">      ( </span><span class="p">\ </span>z <span class="err">→ </span><span class="s">unit</span><span class="err"> =_{Unit} z)</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="err">      ( </span><span class="s">refl</span><span class="err">_{</span><span class="s">unit</span><span class="err">})</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="err">      z</span>
+</span></code></pre></div>
+<p>Again, since Rzk has a builtin uniqueness principle for <code class="language-rzk highlight"><span class="kt">Unit</span></code>, a simpler proof also works:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:uniq-Unit&#39;" id="define:uniq-Unit&#39;" style="visibility: visible; position: relative; color: inherit">uniq-Unit&#39;</a></span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="err">  </span><span class="p">( </span>z <span class="p">:</span><span class="err"> Unit)</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="err">  : </span><span class="s">unit</span><span class="err"> =_{Unit} z</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="err">  := </span><span class="s">refl</span><span class="err">_{z} </span><span class="c">-- works in Rzk, not in HoTT Book, since in Rzk we have unit ≡ z</span>
+</span></code></pre></div>
+<h2 id="dependent-pair-types-types">Dependent pair types (Σ-types)<a class="headerlink" href="#dependent-pair-types-types" title="Permanent link">&para;</a></h2>
+<p>A straightforward generalization of product types to dependent pairs <code class="language-rzk highlight"><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A), B a</span></code>
+where <code class="language-rzk highlight"><span class="err">A</span></code> is a type and <code class="language-rzk highlight"><span class="err">B : A → U</span></code> is a type family indexed in <code class="language-rzk highlight"><span class="err">A</span></code>.</p>
+<p>The indended values of <code class="language-rzk highlight"><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A), B a</span></code> are pairs <code class="language-rzk highlight"><span class="err">(a , b)</span></code> of
+terms <code class="language-rzk highlight"><span class="err">a : A</span></code> and <code class="language-rzk highlight"><span class="err">b : B a</span></code>. Note that the type of the second component
+may depend on the value of the first component.
+When the type family <code class="language-rzk highlight"><span class="err">B</span></code> is constant, e.g. <code class="language-rzk highlight"><span class="err">(</span><span class="p">\ </span>_ <span class="err">→ C)</span></code>,
+then <code class="language-rzk highlight"><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A), B a</span></code> becomes exactly the product type <code class="language-rzk highlight"><span class="err">prod A C</span></code>.</p>
+<p>To eliminate dependent pairs, we use <code class="language-rzk highlight"><span class="s">first</span></code>, <code class="language-rzk highlight"><span class="s">second</span></code>, or pattern
+matching on pairs. However, the types of projections are less obvious compared
+to the case of product types.</p>
+<h3 id="projections">Projections<a class="headerlink" href="#projections" title="Permanent link">&para;</a></h3>
+<p>The first projection can be easily defined in terms of pattern matching:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:pr₁" id="define:pr₁" style="visibility: visible; position: relative; color: inherit">pr₁</a></span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="err">  </span><span class="p">( </span>B <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="err">  : </span><span class="p">(</span>Σ (a <span class="p">:</span><span class="err"> A), B a) → A</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="err">  := \ (a , _) → a</span>
+</span></code></pre></div>
+<p>However, second projection requires some care. For instance, we might try this:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:pr₂" id="define:pr₂" style="visibility: visible; position: relative; color: inherit">pr₂</a></span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="err">  </span><span class="p">( </span>B <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="err">  : </span><span class="p">(</span>Σ (a <span class="p">:</span><span class="err"> A), B a) → B a</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="err">  := \ (_ , b) → b</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>undefined variable: a
+</span></code></pre></div>
+<p>We get the <code>undefined variable</code> error since <code>a</code> is not visible outside of Σ-type definition.
+To access it, we need a dependent function:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:pr₂" id="define:pr₂" style="visibility: visible; position: relative; color: inherit">pr₂</a></span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="err">  </span><span class="p">( </span>B <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="err">  : </span><span class="p">(</span>z <span class="p">:</span><span class="err"> </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A), B a) → B (pr₁ A B z)</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="err">  := \ (_ , b) → b</span>
+</span></code></pre></div>
+<p>In Rzk, it is sometimes more convenient to talk about Σ-types as "total" types (as in "total spaces"):</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:total-type" id="define:total-type" style="visibility: visible; position: relative; color: inherit">total-type</a></span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="err">  </span><span class="p">( </span>B <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="err">  : U</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="err">  := </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A), B a</span>
+</span></code></pre></div>
+<p>We can use pattern matching in the function type and this new definition to write
+second projection slightly differently:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:pr₂&#39;" id="define:pr₂&#39;" style="visibility: visible; position: relative; color: inherit">pr₂&#39;</a></span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="err">  </span><span class="p">( </span>B <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="err">  : ((a, _) : total-type A B) → B a</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="err">  := pr₂ A B</span>
+</span></code></pre></div>
+<h3 id="recursion-and-induction-principles">Recursion and induction principles<a class="headerlink" href="#recursion-and-induction-principles" title="Permanent link">&para;</a></h3>
+<p>The recursion principle for Σ-types is a simple generalization of
+the recursion principle for product types:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:rec-Σ" id="define:rec-Σ" style="visibility: visible; position: relative; color: inherit">rec-Σ</a></span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="err">  </span><span class="p">( </span>B <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="err">  </span><span class="p">( </span>f <span class="p">:</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A) → B a → C)</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="err">  : total-type A B → C</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="err">  := \ (a , b) → f a b</span>
+</span></code></pre></div>
+<p>The induction principle is, again, a generalization of the recursion
+principle to dependent types:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:ind-Σ" id="define:ind-Σ" style="visibility: visible; position: relative; color: inherit">ind-Σ</a></span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="err">  </span><span class="p">( </span>B <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> total-type A B → U)</span>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="err">  </span><span class="p">( </span>f <span class="p">:</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A) → </span><span class="p">(</span>b <span class="p">:</span><span class="err"> B a) → C (a , b))</span>
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="err">  : </span><span class="p">(</span>z <span class="p">:</span><span class="err"> total-type A B) → C z</span>
+</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="err">  := \ (a , b) → f a b</span>
+</span></code></pre></div>
+<p>As before, using <code class="language-rzk highlight"><span class="err">ind-Σ</span></code> we may prove the uniqueness principle, now for Σ-types:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:uniq-Σ" id="define:uniq-Σ" style="visibility: visible; position: relative; color: inherit">uniq-Σ</a></span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="err">  </span><span class="p">( </span>B <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="err">  </span><span class="p">( </span>z <span class="p">:</span><span class="err"> total-type A B)</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="err">  : (pr₁ A B z, pr₂ A B z) =_{total-type A B} z</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="err">  := ind-Σ A B</span>
+</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="err">      ( </span><span class="p">\ </span>z <span class="err">→ (pr₁ A B z, pr₂ A B z) =_{total-type A B} z)</span>
+</span><span id="__span-28-8"><a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="err">      ( </span><span class="p">\ </span>a b <span class="err">→ </span><span class="s">refl</span><span class="err">_{(a , b)})</span>
+</span><span id="__span-28-9"><a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="err">      z</span>
+</span></code></pre></div>
+<p>And again, Rzk can accept a simpler proof, since uniqueness for Σ-types is already built into it:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:uniq-Σ&#39;" id="define:uniq-Σ&#39;" style="visibility: visible; position: relative; color: inherit">uniq-Σ&#39;</a></span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="err">  </span><span class="p">( </span>B <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="err">  </span><span class="p">( </span>z <span class="p">:</span><span class="err"> total-type A B)</span>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="err">  : (pr₁ A B z, pr₂ A B z) =_{total-type A B} z</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="err">  := </span><span class="s">refl</span><span class="err">_{z} </span><span class="c">-- works in Rzk, but not in HoTT Book</span>
+</span></code></pre></div>
+<h3 id="type-theoretic-axiom-of-choice">Type-theoretic "axiom" of choice<a class="headerlink" href="#type-theoretic-axiom-of-choice" title="Permanent link">&para;</a></h3>
+<p>Using <code class="language-rzk highlight"><span class="err">ind-Σ</span></code> we can also prove a type-theoretic axiom of choice:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:AxiomOfChoice" id="define:AxiomOfChoice" style="visibility: visible; position: relative; color: inherit">AxiomOfChoice</a></span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="err">  : U</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="err">  := </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="err">    → </span><span class="p">(</span>R <span class="p">:</span><span class="err"> A → B → U)</span>
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="err">    → </span><span class="p">(</span>(x <span class="p">:</span><span class="err"> A) → </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>y <span class="p">:</span><span class="err"> B), R x y)</span>
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="err">    → </span><span class="p">(</span>Σ (f <span class="p">:</span><span class="err"> A → B), </span><span class="p">(</span>x <span class="p">:</span><span class="err"> A) → R x (f x))</span>
+</span></code></pre></div>
+<p>You are encouraged to try proving this yourself first.</p>
+<p>If you encounter problems, try looking for the proof in the HoTT Book Section 1.6 (page 32).</p>
+<p>If you still have issues formalizing it in Rzk, you may peek here:</p>
+<details class="abstract">
+<summary>Proof of the type theoretic axiom of choice</summary>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:axiom-of-choice" id="define:axiom-of-choice" style="visibility: visible; position: relative; color: inherit">axiom-of-choice</a></span>
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="err">  : AxiomOfChoice</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="err">  := </span><span class="p">\ </span>_ B R k <span class="err">→</span>
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="err">    ( </span><span class="p">\ </span>a <span class="err">→ pr₁ B (R a) (k a)</span>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="err">    , </span><span class="p">\ </span>a <span class="err">→ pr₂ B (R a) (k a))</span>
+</span></code></pre></div>
+</details>
 
 
 
