@@ -1,10 +1,14 @@
 # Identity types
 
+!!! info "Reference material"
+
+    This page is mostly based on the Section 1.12 of HoTT Book.
+
 ```rzk
 #lang rzk-1
 ```
 
-## Examples, `refl`, and induction principle
+## Examples, `refl`, and (based) induction principle
 
 For each type `#!rzk (A : U)` and elements `#!rzk (a b : A)`
 we have the identity type `#!rzk a =_{A} b` of equalities (identities, paths)
@@ -68,6 +72,33 @@ by induction on the argument of type `a = b`:
   (a b : A)
   : (a = b) → (b = a)
   := ind-path A a (\ x _ → x = a) refl b
+```
+
+## Indiscernibility of identicals
+
+```rzk
+#define indiscernibility-of-identicals
+  ( A : U)
+  ( C : A → U)
+  ( a x : A)
+  : (a = x)
+  → C a → C x
+  := ind-path A a
+    ( \ z _ → (C a → C z))
+    ( \ ca → ca)
+    x
+```
+
+## Not-based path induction
+
+```rzk
+#define ind-path'
+  ( A : U)
+  ( C : (x : A) → (y : A) → (x = y) → U)
+  ( c : (x : A) → C x x refl_{x})
+  ( x y : A)
+  : (p : x = y) → C x y p
+  := ind-path A x (C x) (c x) y
 ```
 
 ## Dependent sums with identity types

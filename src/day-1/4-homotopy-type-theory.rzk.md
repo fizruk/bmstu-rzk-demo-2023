@@ -1,5 +1,9 @@
 # Homotopy type theory
 
+!!! info "Reference material"
+
+    This page is mostly based on the Sections 2.1–2.3 of HoTT Book.
+
 ```rzk
 #lang rzk-1
 ```
@@ -14,6 +18,14 @@ and `refl` might not be the only proof of equality!
   (p : x = x)
   : p = refl
   := refl -- path induction on p also cannot work!
+```
+
+```rzk
+#define concat
+  ( A : U)
+  ( x y z : A)
+  : (x = y) → (y = z) → (x = z)
+  := ind-path A x (\ y' _ → (y' = z) → (x = z)) (identity (x = z)) y
 ```
 
 !!! info
