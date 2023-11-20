@@ -357,6 +357,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Propositions as types
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -366,6 +377,32 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#de-morgan-laws" class="md-nav__link">
+    De Morgan laws
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -586,8 +623,124 @@
 
 
 <h1 id="propositions-as-types">Propositions as types<a class="headerlink" href="#propositions-as-types" title="Permanent link">&para;</a></h1>
+<div class="admonition info">
+<p class="admonition-title">Reference material</p>
+<p>This page is mostly based on the Section 1.11 of HoTT Book.</p>
+</div>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">#lang</span><span class="p"> </span><span class="s">rzk-1</span>
 </span></code></pre></div>
+<p>Here is a quick "cheat sheet" relating propositions and types:</p>
+<table>
+<thead>
+<tr>
+<th>English</th>
+<th>Type theory</th>
+<th>Rzk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>True</td>
+<td><span class="arithmatex">\(\mathbf{1}\)</span></td>
+<td><code class="language-rzk highlight"><span class="kt">Unit</span></code></td>
+</tr>
+<tr>
+<td>False</td>
+<td><span class="arithmatex">\(\mathbf{0}\)</span></td>
+<td><code class="language-rzk highlight"><span class="err">Void</span></code> <sup id="fnref2:1"><a class="footnote-ref" href="#fn:1">1</a></sup></td>
+</tr>
+<tr>
+<td>A and B</td>
+<td><span class="arithmatex">\(A \times B\)</span></td>
+<td><code class="language-rzk highlight"><span class="err">prod A B</span></code></td>
+</tr>
+<tr>
+<td>A or B</td>
+<td><span class="arithmatex">\(A + B\)</span></td>
+<td><code class="language-rzk highlight"><span class="err">coprod A B</span></code> <sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></td>
+</tr>
+<tr>
+<td>If A then B</td>
+<td><span class="arithmatex">\(A \to B\)</span></td>
+<td><code class="language-rzk highlight"><span class="err">A → B</span></code></td>
+</tr>
+<tr>
+<td>A if and only if B</td>
+<td><span class="arithmatex">\((A \to B) \times (B \to A)\)</span></td>
+<td><code class="language-rzk highlight"><span class="err">prod (A → B) (B → A)</span></code></td>
+</tr>
+<tr>
+<td>Not A</td>
+<td><span class="arithmatex">\(A \to \mathbf{0}\)</span></td>
+<td><code class="language-rzk highlight"><span class="err">A → 0</span></code> <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></td>
+</tr>
+<tr>
+<td>For all x : A, P(x) holds</td>
+<td><span class="arithmatex">\(\prod_{x : A} P(x)\)</span></td>
+<td><code class="language-rzk highlight"><span class="p">(</span>x <span class="p">:</span><span class="err"> A) → P x</span></code></td>
+</tr>
+<tr>
+<td>Exists x : A such that P(x) holds</td>
+<td><span class="arithmatex">\(\sum_{x : A} P(x)\)</span></td>
+<td><code class="language-rzk highlight"><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>x <span class="p">:</span><span class="err"> A), P x</span></code><sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup></td>
+</tr>
+</tbody>
+</table>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:¬" id="define:¬" style="visibility: visible; position: relative; color: inherit">¬</a></span><span class="err"> </span><span class="p">(</span>A <span class="p">:</span><span class="err"> U) : U</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="err">  := A → Void</span>
+</span></code></pre></div>
+<h2 id="de-morgan-laws">De Morgan laws<a class="headerlink" href="#de-morgan-laws" title="Permanent link">&para;</a></h2>
+<p>We can prove the following de Morgan laws:</p>
+<blockquote>
+<p>If not A and not B, then not (A or B).</p>
+</blockquote>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:neg-prod" id="define:neg-prod" style="visibility: visible; position: relative; color: inherit">neg-prod</a></span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="err">  : prod (¬ A) (¬ B)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="err">  → ¬ (coprod A B)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="err">  := \ (na , nb) → rec-coprod A B Void na nb</span>
+</span></code></pre></div>
+<blockquote>
+<p>If not (A or B), then not A and not B.</p>
+</blockquote>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:neg-coprod" id="define:neg-coprod" style="visibility: visible; position: relative; color: inherit">neg-coprod</a></span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="err">  : ¬ (coprod A B)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="err">  → prod (¬ A) (¬ B)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="err">  := </span><span class="p">\ </span>k <span class="err">→ ( </span><span class="p">\ </span>a <span class="err">→ k (inl A B a) , </span><span class="p">\ </span>b <span class="err">→ k (inr A B b))</span>
+</span></code></pre></div>
+<p>Not all classical tautologies are provable in HoTT:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:classical-tauto" id="define:classical-tauto" style="visibility: visible; position: relative; color: inherit">classical-tauto</a></span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="err">  : ¬ (prod A B) → coprod (¬ A) (¬ B)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="err">  := </span><span class="p">\ </span>k <span class="err">→ ???</span>
+</span></code></pre></div>
+<blockquote>
+<p>If for all x : A, P(x) and Q(x) then (for all x : A, P(x)) and (for all x : A, Q(x)).</p>
+</blockquote>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:forall-prod" id="define:forall-prod" style="visibility: visible; position: relative; color: inherit">forall-prod</a></span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="err">  </span><span class="p">(</span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="err">  </span><span class="p">(</span>P Q <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="err">  : </span><span class="p">(</span>(x <span class="p">:</span><span class="err"> A) → prod (P x) (Q x))</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="err">  → prod </span><span class="p">(</span>(x <span class="p">:</span><span class="err"> A) → P x) </span><span class="p">(</span>(x <span class="p">:</span><span class="err"> A) → Q x)</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="err">  := </span><span class="p">\ </span>k <span class="err">→ ( </span><span class="p">\ </span>x <span class="err">→ </span><span class="s">first</span><span class="err"> (k x) , </span><span class="p">\ </span>x <span class="err">→ </span><span class="s">second</span><span class="err"> (k x))</span>
+</span></code></pre></div>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Does not exist in Rzk as of v0.6.7, but can be postulated.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Does not exist in Rzk as of v0.6.7, but can be postulated in a weak form.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>This is only for the constructive version of "exists".
+  For the classical version, we need the propostional truncation of the Σ-type.
+  See Section 3.7 of HoTT Book for more details.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 

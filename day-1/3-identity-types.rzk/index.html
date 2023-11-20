@@ -414,8 +414,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#examples-refl-and-induction-principle" class="md-nav__link">
-    Examples, refl, and induction principle
+  <a href="#examples-refl-and-based-induction-principle" class="md-nav__link">
+    Examples, refl, and (based) induction principle
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#indiscernibility-of-identicals" class="md-nav__link">
+    Indiscernibility of identicals
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-based-path-induction" class="md-nav__link">
+    Not-based path induction
   </a>
   
 </li>
@@ -630,9 +644,13 @@
 
 
 <h1 id="identity-types">Identity types<a class="headerlink" href="#identity-types" title="Permanent link">&para;</a></h1>
+<div class="admonition info">
+<p class="admonition-title">Reference material</p>
+<p>This page is mostly based on the Section 1.12 of HoTT Book.</p>
+</div>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">#lang</span><span class="p"> </span><span class="s">rzk-1</span>
 </span></code></pre></div>
-<h2 id="examples-refl-and-induction-principle">Examples, <code>refl</code>, and induction principle<a class="headerlink" href="#examples-refl-and-induction-principle" title="Permanent link">&para;</a></h2>
+<h2 id="examples-refl-and-based-induction-principle">Examples, <code>refl</code>, and (based) induction principle<a class="headerlink" href="#examples-refl-and-based-induction-principle" title="Permanent link">&para;</a></h2>
 <p>For each type <code class="language-rzk highlight"><span class="p">(</span>A <span class="p">:</span><span class="err"> U)</span></code> and elements <code class="language-rzk highlight"><span class="p">(</span>a b <span class="p">:</span><span class="err"> A)</span></code>
 we have the identity type <code class="language-rzk highlight"><span class="err">a =_{A} b</span></code> of equalities (identities, paths)
 between <code>a</code> and <code>b</code>.</p>
@@ -681,23 +699,44 @@ by induction on the argument of type <code>a = b</code>:</p>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="err">  : (a = b) → (b = a)</span>
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="err">  := ind-path A a (</span><span class="p">\ </span>x _ <span class="err">→ x = a) </span><span class="s">refl</span><span class="err"> b</span>
 </span></code></pre></div>
+<h2 id="indiscernibility-of-identicals">Indiscernibility of identicals<a class="headerlink" href="#indiscernibility-of-identicals" title="Permanent link">&para;</a></h2>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:indiscernibility-of-identicals" id="define:indiscernibility-of-identicals" style="visibility: visible; position: relative; color: inherit">indiscernibility-of-identicals</a></span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="err">  </span><span class="p">( </span>a x <span class="p">:</span><span class="err"> A)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="err">  : (a = x)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="err">  → C a → C x</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="err">  := ind-path A a</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="err">    ( </span><span class="p">\ </span>z _ <span class="err">→ (C a → C z))</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="err">    ( </span><span class="p">\ </span>ca <span class="err">→ ca)</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="err">    x</span>
+</span></code></pre></div>
+<h2 id="not-based-path-induction">Not-based path induction<a class="headerlink" href="#not-based-path-induction" title="Permanent link">&para;</a></h2>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:ind-path&#39;" id="define:ind-path&#39;" style="visibility: visible; position: relative; color: inherit">ind-path&#39;</a></span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> </span><span class="p">(</span>x <span class="p">:</span><span class="err"> A) → </span><span class="p">(</span>y <span class="p">:</span><span class="err"> A) → (x = y) → U)</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="err">  </span><span class="p">( </span>c <span class="p">:</span><span class="err"> </span><span class="p">(</span>x <span class="p">:</span><span class="err"> A) → C x x </span><span class="s">refl</span><span class="err">_{x})</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="err">  </span><span class="p">( </span>x y <span class="p">:</span><span class="err"> A)</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="err">  : </span><span class="p">(</span>p <span class="p">:</span><span class="err"> x = y) → C x y p</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="err">  := ind-path A x (C x) (c x) y</span>
+</span></code></pre></div>
 <h2 id="dependent-sums-with-identity-types">Dependent sums with identity types<a class="headerlink" href="#dependent-sums-with-identity-types" title="Permanent link">&para;</a></h2>
 <p>The type <code class="language-rzk highlight"><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>x <span class="p">:</span><span class="err"> A), B x</span></code> is a type of (dependent) pairs
 where the first component (named <code>x</code> here) is of type <code>A</code>,
 and the second component is of type <code>B x</code>.</p>
 <p>For example, preimages (fibers) of functions can be defined
 using <code class="language-rzk highlight"><span class="kt">Σ</span></code>-types:</p>
-<div class="language-rzk highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:preimage" id="define:preimage" style="visibility: visible; position: relative; color: inherit">preimage</a></span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="err">  </span><span class="p">(</span>f <span class="p">:</span><span class="err"> A → B)</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="err">  </span><span class="p">(</span>y <span class="p">:</span><span class="err"> B)</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="err">  : U</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="err">  := </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>x <span class="p">:</span><span class="err"> A), (f x = y)</span>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:preimage" id="define:preimage" style="visibility: visible; position: relative; color: inherit">preimage</a></span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="err">  </span><span class="p">(</span>f <span class="p">:</span><span class="err"> A → B)</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="err">  </span><span class="p">(</span>y <span class="p">:</span><span class="err"> B)</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="err">  : U</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="err">  := </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>x <span class="p">:</span><span class="err"> A), (f x = y)</span>
 </span></code></pre></div>
-<div class="language-rzk highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:product" id="define:product" style="visibility: visible; position: relative; color: inherit">product</a></span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="err">  </span><span class="p">( </span>A B <span class="p">:</span><span class="err"> U)</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="err">  : U</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="err">  := </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>_ <span class="p">:</span><span class="err"> A), B</span>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:product" id="define:product" style="visibility: visible; position: relative; color: inherit">product</a></span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="err">  </span><span class="p">( </span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="err">  : U</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="err">  := </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>_ <span class="p">:</span><span class="err"> A), B</span>
 </span></code></pre></div>
 
 

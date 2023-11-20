@@ -586,6 +586,10 @@
 
 
 <h1 id="homotopy-type-theory">Homotopy type theory<a class="headerlink" href="#homotopy-type-theory" title="Permanent link">&para;</a></h1>
+<div class="admonition info">
+<p class="admonition-title">Reference material</p>
+<p>This page is mostly based on the Sections 2.1–2.3 of HoTT Book.</p>
+</div>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">#lang</span><span class="p"> </span><span class="s">rzk-1</span>
 </span></code></pre></div>
 <p>In HoTT (and in Rzk), the identity type is not always a proposition
@@ -596,6 +600,12 @@ and <code>refl</code> might not be the only proof of equality!</p>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="err">  </span><span class="p">(</span>p <span class="p">:</span><span class="err"> x = x)</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="err">  : p = </span><span class="s">refl</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="err">  := </span><span class="s">refl</span><span class="err"> </span><span class="c">-- path induction on p also cannot work!</span>
+</span></code></pre></div>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:concat" id="define:concat" style="visibility: visible; position: relative; color: inherit">concat</a></span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="err">  </span><span class="p">( </span>x y z <span class="p">:</span><span class="err"> A)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="err">  : (x = y) → (y = z) → (x = z)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="err">  := ind-path A x (</span><span class="p">\ </span>y&#39; _ <span class="err">→ (y&#39; = z) → (x = z)) (identity (x = z)) y</span>
 </span></code></pre></div>
 <div class="admonition info">
 <p class="admonition-title">Info</p>

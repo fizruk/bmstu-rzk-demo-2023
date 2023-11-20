@@ -417,6 +417,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Exercises
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -426,6 +437,66 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dependent-types" class="md-nav__link">
+    Dependent types
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#propositions-as-types" class="md-nav__link">
+    Propositions as types
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#identity-types" class="md-nav__link">
+    Identity types
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#homotopy-type-theory" class="md-nav__link">
+    Homotopy type theory
+  </a>
+  
+    <nav class="md-nav" aria-label="Homotopy type theory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#loop-space" class="md-nav__link">
+    Loop space
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -587,6 +658,111 @@
 
 <h1 id="exercises-for-day-1">Exercises for Day 1<a class="headerlink" href="#exercises-for-day-1" title="Permanent link">&para;</a></h1>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">#lang</span><span class="p"> </span><span class="s">rzk-1</span>
+</span></code></pre></div>
+<h2 id="dependent-types">Dependent types<a class="headerlink" href="#dependent-types" title="Permanent link">&para;</a></h2>
+<p><strong>Exercise 1.1.</strong> <em>(HoTT Book Exercise 1.1)</em>
+Given functions <code class="language-rzk highlight"><span class="err">f : A → B</span></code> and <code class="language-rzk highlight"><span class="err">g : B → C</span></code>,
+define their <em>composite</em> <code class="language-rzk highlight"><span class="err">compose A B C f g : A → C</span></code>.
+Show that composition is associative (definitionally)
+and unital (w.r.t. <code class="language-rzk highlight"><span class="err">identity</span></code>).</p>
+<p><strong>Exercise 1.2.</strong> <em>(HoTT Book Exercises 1.2 and 1.3)</em>
+Derive recursion and induction principles for products <code class="language-rzk highlight"><span class="err">rec-prod A B</span></code>
+using only the projections <code class="language-rzk highlight"><span class="err">pr₁</span></code> and <code class="language-rzk highlight"><span class="err">pr₂</span></code>,
+and verify that the definitional equalities are valid.
+Do the same for Σ-types.</p>
+<p><strong>Exercise 1.3.</strong>
+Show that Σ-types are associative in the following sense:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:reassoc-left-Σ" id="define:reassoc-left-Σ" style="visibility: visible; position: relative; color: inherit">reassoc-left-Σ</a></span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="err">  </span><span class="p">( </span>B <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A) → B a → U)</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="err">  : </span><span class="p">(</span>Σ (a <span class="p">:</span><span class="err"> A), </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>b <span class="p">:</span><span class="err"> B a), C a b)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="err">  → </span><span class="p">(</span>Σ (ab <span class="p">:</span><span class="err"> </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A), B a), C (pr₁ A B ab) (pr₂ A B ab))</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="err">  := ???</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:reassoc-right-Σ" id="define:reassoc-right-Σ" style="visibility: visible; position: relative; color: inherit">reassoc-right-Σ</a></span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="err">  </span><span class="p">( </span>B <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A) → B a → U)</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="err">  : </span><span class="p">(</span>Σ (ab <span class="p">:</span><span class="err"> </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A), B a), C (pr₁ A B ab) (pr₂ A B ab))</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="err">  → </span><span class="p">(</span>Σ (a <span class="p">:</span><span class="err"> A), </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>b <span class="p">:</span><span class="err"> B a), C a b)</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="err">  := ???</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:assoc-left-Σ" id="define:assoc-left-Σ" style="visibility: visible; position: relative; color: inherit">assoc-left-Σ</a></span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="err">  </span><span class="p">( </span>B <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A) → B a → U)</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="err">  </span><span class="p">( </span>abc <span class="p">:</span><span class="err"> </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A), </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>b <span class="p">:</span><span class="err"> B a), C a b)</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="err">  : reassoc-right A B C (reassoc-left A B C abc) = abc</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="err">  := ???</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:assoc-right-Σ" id="define:assoc-right-Σ" style="visibility: visible; position: relative; color: inherit">assoc-right-Σ</a></span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="err">  </span><span class="p">( </span>B <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="err">  </span><span class="p">( </span>C <span class="p">:</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A) → B a → U)</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="err">  </span><span class="p">( </span>abc <span class="p">:</span><span class="err"> </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>ab <span class="p">:</span><span class="err"> </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A), B a), C (pr₁ A B ab) (pr₂ A B ab))</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="err">  : reassoc-left A B C (reassoc-left A B C abc) = abc</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="err">  := ???</span>
+</span></code></pre></div>
+<h2 id="propositions-as-types">Propositions as types<a class="headerlink" href="#propositions-as-types" title="Permanent link">&para;</a></h2>
+<p><strong>Exercise 1.3.</strong> <em>(HoTT Book Exercise 1.11)</em>
+Show that for any type <code class="language-rzk highlight"><span class="err">A</span></code>, we have <code class="language-rzk highlight"><span class="err">¬ (¬ (¬ A)) → ¬ A</span></code>.</p>
+<p><strong>Exercise 1.4.</strong> <em>(HoTT Book Exercises 1.12 and 1.13)</em>
+Using propositions as types interpretation, prove the following tautologies:</p>
+<ol>
+<li>If A, then (if B then A).</li>
+<li>If A, then not (not A).</li>
+<li>If (not A or not B), then not (A and B).</li>
+<li>For any P, double negation of the law of excluded middle holds: not (not (not P or P)).</li>
+</ol>
+<h2 id="identity-types">Identity types<a class="headerlink" href="#identity-types" title="Permanent link">&para;</a></h2>
+<p><strong>Exercise 1.5.</strong> <em>(HoTT Book Exercise 1.14)</em>
+Why do the induction principles for identity types not allow us to construct a
+the following function?</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:bad" id="define:bad" style="visibility: visible; position: relative; color: inherit">bad</a></span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="err">  : </span><span class="p">(</span>x <span class="p">:</span><span class="err"> A)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="err">  → </span><span class="p">(</span>p <span class="p">:</span><span class="err"> x = x)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="err">  → p = </span><span class="s">refl</span><span class="err">_{x}</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="err">  := ind-path A x _ </span><span class="s">refl</span><span class="err">_{</span><span class="s">refl</span><span class="err">_{x}}</span>
+</span></code></pre></div>
+<h2 id="homotopy-type-theory">Homotopy type theory<a class="headerlink" href="#homotopy-type-theory" title="Permanent link">&para;</a></h2>
+<p><strong>Exercise 1.6.</strong>
+Formalize both proofs of HoTT Book Lemma 2.1.1.
+Show that both proofs are equal.</p>
+<p><strong>Exercise 1.7.</strong>
+Formalize both proofs of HoTT Book Lemma 2.1.2.
+Show that both proofs are equal.</p>
+<p><strong>Exercise 1.9.</strong>
+Formalize the proofs of HoTT Book Lemma 2.1.3.
+Show that different proofs for each point in the lemma are equal.</p>
+<h3 id="loop-space">Loop space<a class="headerlink" href="#loop-space" title="Permanent link">&para;</a></h3>
+<p>Consider the definitions of loop space and 2-loop space (HoTT Book Definition 2.1.8):</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:Ω" id="define:Ω" style="visibility: visible; position: relative; color: inherit">Ω</a></span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="err">  </span><span class="p">( </span>a <span class="p">:</span><span class="err"> A)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="err">  : U</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="err">  := a =_{A} a</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:Ω²" id="define:Ω²" style="visibility: visible; position: relative; color: inherit">Ω²</a></span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="err">  </span><span class="p">( </span>a <span class="p">:</span><span class="err"> A)</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="err">  : U</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="err">  := Ω (Ω A a) </span><span class="s">refl</span><span class="err">_{a}</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:concat-Ω" id="define:concat-Ω" style="visibility: visible; position: relative; color: inherit">concat-Ω</a></span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="err">  </span><span class="p">( </span>a <span class="p">:</span><span class="err"> A)</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="err">  : Ω A a → Ω A a → Ω A a</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="err">  := concat A a a a</span>
+</span></code></pre></div>
+<p><strong>Exercise 1.10.</strong>
+Formalize the proof of HoTT Book Theorem 2.1.6 (Eckmann-Hilton):</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:Eckmann-Hilton" id="define:Eckmann-Hilton" style="visibility: visible; position: relative; color: inherit">Eckmann-Hilton</a></span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="err">  </span><span class="p">( </span>a <span class="p">:</span><span class="err"> A)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="err">  </span><span class="p">( </span>α β <span class="p">:</span><span class="err"> Ω A a)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="err">  : concat-Ω A a α β = concat-Ω A a β α</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="err">  := ???</span>
 </span></code></pre></div>
 
 

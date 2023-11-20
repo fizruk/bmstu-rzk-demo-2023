@@ -448,6 +448,47 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#coproducts" class="md-nav__link">
+    Coproducts
+  </a>
+  
+    <nav class="md-nav" aria-label="Coproducts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#postulating-the-empty-type" class="md-nav__link">
+    Postulating the empty type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postulating-the-coproduct-type" class="md-nav__link">
+    Postulating the coproduct type
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#booleans" class="md-nav__link">
+    Booleans
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#natural-numbers" class="md-nav__link">
+    Natural numbers
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1028,10 +1069,11 @@ principle to dependent types:</p>
 <p>Using <code class="language-rzk highlight"><span class="err">ind-Σ</span></code> we can also prove a type-theoretic axiom of choice:</p>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:AxiomOfChoice" id="define:AxiomOfChoice" style="visibility: visible; position: relative; color: inherit">AxiomOfChoice</a></span>
 </span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="err">  : U</span>
-</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="err">  := </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
-</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="err">    → </span><span class="p">(</span>R <span class="p">:</span><span class="err"> A → B → U)</span>
-</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="err">    → </span><span class="p">(</span>(x <span class="p">:</span><span class="err"> A) → </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>y <span class="p">:</span><span class="err"> B), R x y)</span>
-</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="err">    → </span><span class="p">(</span>Σ (f <span class="p">:</span><span class="err"> A → B), </span><span class="p">(</span>x <span class="p">:</span><span class="err"> A) → R x (f x))</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="err">  := </span><span class="p">(</span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="err">    → </span><span class="p">(</span>B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="err">    → </span><span class="p">(</span>R <span class="p">:</span><span class="err"> A → B → U)</span>
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="err">    → </span><span class="p">(</span>(x <span class="p">:</span><span class="err"> A) → </span><span class="kt">Σ</span><span class="err"> </span><span class="p">(</span>y <span class="p">:</span><span class="err"> B), R x y)</span>
+</span><span id="__span-30-7"><a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="err">    → </span><span class="p">(</span>Σ (f <span class="p">:</span><span class="err"> A → B), </span><span class="p">(</span>x <span class="p">:</span><span class="err"> A) → R x (f x))</span>
 </span></code></pre></div>
 <p>You are encouraged to try proving this yourself first.</p>
 <p>If you encounter problems, try looking for the proof in the HoTT Book Section 1.6 (page 32).</p>
@@ -1045,6 +1087,214 @@ principle to dependent types:</p>
 </span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="err">    , </span><span class="p">\ </span>a <span class="err">→ pr₂ B (R a) (k a))</span>
 </span></code></pre></div>
 </details>
+<h2 id="coproducts">Coproducts<a class="headerlink" href="#coproducts" title="Permanent link">&para;</a></h2>
+<p>Given types <span class="arithmatex">\(A\)</span> and <span class="arithmatex">\(B\)</span> a coproduct type <span class="arithmatex">\(A + B\)</span> corresponds intuitively
+to a disjoint union of <span class="arithmatex">\(A\)</span> and <span class="arithmatex">\(B\)</span> (in set theory). We also have a nullary
+version: <span class="arithmatex">\(\mathbf{0}\)</span> (empty type).</p>
+<p>In Rzk, empty type and coproduct types do not exist, but a weaker version can be postulated.</p>
+<h3 id="postulating-the-empty-type">Postulating the empty type<a class="headerlink" href="#postulating-the-empty-type" title="Permanent link">&para;</a></h3>
+<p>For example, an empty type can be postulated as follows:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:Void" id="define:Void" style="visibility: visible; position: relative; color: inherit">Void</a></span><span class="err"> : U</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:ind-Void" id="define:ind-Void" style="visibility: visible; position: relative; color: inherit">ind-Void</a></span>
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> Void → U)</span>
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="err">  : </span><span class="p">(</span>z <span class="p">:</span><span class="err"> Void) → C z</span>
+</span></code></pre></div>
+<p>Since there should be no values of type <code class="language-rzk highlight"><span class="err">Void</span></code>,
+the induction principle corresponds to the principle that from falsehood anything follows.
+A non-dependent version of that corresponds to the recursion principle,
+which we can define in terms of <code class="language-rzk highlight"><span class="err">ind-Void</span></code>:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:rec-Void" id="define:rec-Void" style="visibility: visible; position: relative; color: inherit">rec-Void</a></span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="err">  : Void → C</span>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="err">  := ind-Void (</span><span class="p">\</span>_ <span class="err">→ C)</span>
+</span></code></pre></div>
+<h3 id="postulating-the-coproduct-type">Postulating the coproduct type<a class="headerlink" href="#postulating-the-coproduct-type" title="Permanent link">&para;</a></h3>
+<p>Similarly, we can postulate the coproduct:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:coprod" id="define:coprod" style="visibility: visible; position: relative; color: inherit">coprod</a></span>
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="err">  : U</span>
+</span></code></pre></div>
+<p>There are two ways to create a term of type <code class="language-rzk highlight"><span class="err">coprod A B</span></code> —
+inject a term from <code class="language-rzk highlight"><span class="err">A</span></code> or a term of <code class="language-rzk highlight"><span class="err">B</span></code>:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:inl" id="define:inl" style="visibility: visible; position: relative; color: inherit">inl</a></span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="err">  : A → coprod A B</span>
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:inr" id="define:inr" style="visibility: visible; position: relative; color: inherit">inr</a></span>
+</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="err">  : B → coprod A B</span>
+</span></code></pre></div>
+<p>To eliminate a coproduct, we have to provide two handlers —
+one for the left case and one for the right:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:ind-coprod" id="define:ind-coprod" style="visibility: visible; position: relative; color: inherit">ind-coprod</a></span>
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> coprod A B → U)</span>
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="err">  </span><span class="p">(</span>l <span class="p">:</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A) → C (inl A B a))</span>
+</span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="err">  </span><span class="p">(</span>r <span class="p">:</span><span class="err"> </span><span class="p">(</span>b <span class="p">:</span><span class="err"> B) → C (inr A B b))</span>
+</span><span id="__span-36-6"><a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="err">  : </span><span class="p">(</span>z <span class="p">:</span><span class="err"> coprod A B) → C z</span>
+</span></code></pre></div>
+<p>Since we are postulating the induction principle,
+we also have to provide the computational rules explicitly.
+However, in Rzk, we can only postulate <em>propositional</em> computational rules:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:ind-coprod-inl" id="define:ind-coprod-inl" style="visibility: visible; position: relative; color: inherit">ind-coprod-inl</a></span>
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> coprod A B → U)</span>
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="err">  </span><span class="p">(</span>l <span class="p">:</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A) → C (inl A B a))</span>
+</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="err">  </span><span class="p">(</span>r <span class="p">:</span><span class="err"> </span><span class="p">(</span>b <span class="p">:</span><span class="err"> B) → C (inr A B b))</span>
+</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="err">  </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A)</span>
+</span><span id="__span-37-7"><a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="err">  : ind-coprod A B C l r (inl A B a) = l a</span>
+</span><span id="__span-37-8"><a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a>
+</span><span id="__span-37-9"><a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:ind-coprod-inr" id="define:ind-coprod-inr" style="visibility: visible; position: relative; color: inherit">ind-coprod-inr</a></span>
+</span><span id="__span-37-10"><a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-37-11"><a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> coprod A B → U)</span>
+</span><span id="__span-37-12"><a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a><span class="err">  </span><span class="p">(</span>l <span class="p">:</span><span class="err"> </span><span class="p">(</span>a <span class="p">:</span><span class="err"> A) → C (inl A B a))</span>
+</span><span id="__span-37-13"><a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a><span class="err">  </span><span class="p">(</span>r <span class="p">:</span><span class="err"> </span><span class="p">(</span>b <span class="p">:</span><span class="err"> B) → C (inr A B b))</span>
+</span><span id="__span-37-14"><a id="__codelineno-37-14" name="__codelineno-37-14" href="#__codelineno-37-14"></a><span class="err">  </span><span class="p">(</span>b <span class="p">:</span><span class="err"> B)</span>
+</span><span id="__span-37-15"><a id="__codelineno-37-15" name="__codelineno-37-15" href="#__codelineno-37-15"></a><span class="err">  : ind-coprod A B C l r (inr A B b) = r b</span>
+</span></code></pre></div>
+<p>We can now define recursion for coproducts
+as a special case of induction:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:rec-coprod" id="define:rec-coprod" style="visibility: visible; position: relative; color: inherit">rec-coprod</a></span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="err">  </span><span class="p">(</span>l <span class="p">:</span><span class="err"> A → C)</span>
+</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="err">  </span><span class="p">(</span>r <span class="p">:</span><span class="err"> B → C)</span>
+</span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="err">  : coprod A B → C</span>
+</span><span id="__span-38-7"><a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a><span class="err">  := ind-coprod A B (</span><span class="p">\ </span>_ <span class="err">→ C) l r</span>
+</span></code></pre></div>
+<p>The uniqueness principle for coproducts says
+that any coproduct is either an <code class="language-rzk highlight"><span class="err">inl</span></code> or an <code class="language-rzk highlight"><span class="err">inr</span></code>.
+Proving the uniqueness is fairly straightforward, except
+we have to provide some intermediate types explicitly:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:uniq-coprod" id="define:uniq-coprod" style="visibility: visible; position: relative; color: inherit">uniq-coprod</a></span>
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="err">  </span><span class="p">(</span>z <span class="p">:</span><span class="err"> coprod A B)</span>
+</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="err">  : coprod</span>
+</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="err">      </span><span class="p">(</span>Σ (a <span class="p">:</span><span class="err"> A), inl A B a = z)</span>
+</span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="err">      </span><span class="p">(</span>Σ (b <span class="p">:</span><span class="err"> B), inr A B b = z)</span>
+</span><span id="__span-39-7"><a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a><span class="err">  := ind-coprod A B</span>
+</span><span id="__span-39-8"><a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a><span class="err">      </span><span class="p">( </span>\ z&#39; → coprod
+</span><span id="__span-39-9"><a id="__codelineno-39-9" name="__codelineno-39-9" href="#__codelineno-39-9"></a>          (Σ (a <span class="p">:</span><span class="err"> A), inl A B a = z&#39;)</span>
+</span><span id="__span-39-10"><a id="__codelineno-39-10" name="__codelineno-39-10" href="#__codelineno-39-10"></a><span class="err">          </span><span class="p">(</span>Σ (b <span class="p">:</span><span class="err"> B), inr A B b = z&#39;))</span>
+</span><span id="__span-39-11"><a id="__codelineno-39-11" name="__codelineno-39-11" href="#__codelineno-39-11"></a><span class="err">      </span><span class="p">( </span>\ a&#39; → inl
+</span><span id="__span-39-12"><a id="__codelineno-39-12" name="__codelineno-39-12" href="#__codelineno-39-12"></a>          (Σ (a <span class="p">:</span><span class="err"> A), (inl A B a = inl A B a&#39;))</span>
+</span><span id="__span-39-13"><a id="__codelineno-39-13" name="__codelineno-39-13" href="#__codelineno-39-13"></a><span class="err">          </span><span class="p">(</span>Σ (b <span class="p">:</span><span class="err"> B), (inr A B b = inl A B a&#39;))</span>
+</span><span id="__span-39-14"><a id="__codelineno-39-14" name="__codelineno-39-14" href="#__codelineno-39-14"></a><span class="err">          (a&#39; , </span><span class="s">refl</span><span class="err">))</span>
+</span><span id="__span-39-15"><a id="__codelineno-39-15" name="__codelineno-39-15" href="#__codelineno-39-15"></a><span class="err">      </span><span class="p">( </span>\ b&#39; → inr
+</span><span id="__span-39-16"><a id="__codelineno-39-16" name="__codelineno-39-16" href="#__codelineno-39-16"></a>          (Σ (a <span class="p">:</span><span class="err"> A), (inl A B a = inr A B b&#39;))</span>
+</span><span id="__span-39-17"><a id="__codelineno-39-17" name="__codelineno-39-17" href="#__codelineno-39-17"></a><span class="err">          </span><span class="p">(</span>Σ (b <span class="p">:</span><span class="err"> B), (inr A B b = inr A B b&#39;))</span>
+</span><span id="__span-39-18"><a id="__codelineno-39-18" name="__codelineno-39-18" href="#__codelineno-39-18"></a><span class="err">          (b&#39; , </span><span class="s">refl</span><span class="err">))</span>
+</span><span id="__span-39-19"><a id="__codelineno-39-19" name="__codelineno-39-19" href="#__codelineno-39-19"></a><span class="err">      z</span>
+</span></code></pre></div>
+<h2 id="booleans">Booleans<a class="headerlink" href="#booleans" title="Permanent link">&para;</a></h2>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:Bool" id="define:Bool" style="visibility: visible; position: relative; color: inherit">Bool</a></span><span class="err"> : U</span>
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:false" id="define:false" style="visibility: visible; position: relative; color: inherit">false</a></span><span class="err"> : Bool</span>
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:true" id="define:true" style="visibility: visible; position: relative; color: inherit">true</a></span><span class="err"> : Bool</span>
+</span></code></pre></div>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:ind-Bool" id="define:ind-Bool" style="visibility: visible; position: relative; color: inherit">ind-Bool</a></span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> Bool → U)</span>
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="err">  </span><span class="p">(</span>f <span class="p">:</span><span class="err"> C false)</span>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="err">  </span><span class="p">(</span>t <span class="p">:</span><span class="err"> C true)</span>
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="err">  : </span><span class="p">(</span>z <span class="p">:</span><span class="err"> Bool) → C z</span>
+</span></code></pre></div>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:ind-Bool-false" id="define:ind-Bool-false" style="visibility: visible; position: relative; color: inherit">ind-Bool-false</a></span>
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> Bool → U)</span>
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="err">  </span><span class="p">(</span>f <span class="p">:</span><span class="err"> C false)</span>
+</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="err">  </span><span class="p">(</span>t <span class="p">:</span><span class="err"> C true)</span>
+</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a><span class="err">  : ind-Bool C f t false = f</span>
+</span><span id="__span-42-6"><a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:ind-Bool-true" id="define:ind-Bool-true" style="visibility: visible; position: relative; color: inherit">ind-Bool-true</a></span>
+</span><span id="__span-42-7"><a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> Bool → U)</span>
+</span><span id="__span-42-8"><a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a><span class="err">  </span><span class="p">(</span>f <span class="p">:</span><span class="err"> C false)</span>
+</span><span id="__span-42-9"><a id="__codelineno-42-9" name="__codelineno-42-9" href="#__codelineno-42-9"></a><span class="err">  </span><span class="p">(</span>t <span class="p">:</span><span class="err"> C true)</span>
+</span><span id="__span-42-10"><a id="__codelineno-42-10" name="__codelineno-42-10" href="#__codelineno-42-10"></a><span class="err">  : ind-Bool C f t true = t</span>
+</span></code></pre></div>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:rec-Bool" id="define:rec-Bool" style="visibility: visible; position: relative; color: inherit">rec-Bool</a></span>
+</span><span id="__span-43-2"><a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-43-3"><a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a><span class="err">  </span><span class="p">(</span>f t <span class="p">:</span><span class="err"> C)</span>
+</span><span id="__span-43-4"><a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a><span class="err">  : Bool → C</span>
+</span><span id="__span-43-5"><a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a><span class="err">  := ind-Bool (</span><span class="p">\ </span>_ <span class="err">→ C) f t</span>
+</span></code></pre></div>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:uniq-Bool" id="define:uniq-Bool" style="visibility: visible; position: relative; color: inherit">uniq-Bool</a></span>
+</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="err">  </span><span class="p">(</span>z <span class="p">:</span><span class="err"> Bool)</span>
+</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="err">  : coprod (z = false) (z = true)</span>
+</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="err">  := ind-Bool</span>
+</span><span id="__span-44-5"><a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="err">      ( </span><span class="p">\ </span>z&#39; <span class="err">-&gt; coprod (z&#39; = false) (z&#39; = true))</span>
+</span><span id="__span-44-6"><a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a><span class="err">      ( inl (false = false) (false = true) </span><span class="s">refl</span><span class="err">)</span>
+</span><span id="__span-44-7"><a id="__codelineno-44-7" name="__codelineno-44-7" href="#__codelineno-44-7"></a><span class="err">      ( inr (true = false) (true = true) </span><span class="s">refl</span><span class="err">)</span>
+</span><span id="__span-44-8"><a id="__codelineno-44-8" name="__codelineno-44-8" href="#__codelineno-44-8"></a><span class="err">      z</span>
+</span></code></pre></div>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:not" id="define:not" style="visibility: visible; position: relative; color: inherit">not</a></span>
+</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="err">  : Bool → Bool</span>
+</span><span id="__span-45-3"><a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="err">  := rec-Bool Bool true false</span>
+</span></code></pre></div>
+<p>Unfortunately, because computation rules are postulated
+in a weak form, they do not compute automatically and have to be used explicitly,
+so the following proof does not work:</p>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:not-not-is-identity" id="define:not-not-is-identity" style="visibility: visible; position: relative; color: inherit">not-not-is-identity</a></span>
+</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="err">  : </span><span class="p">(</span>z <span class="p">:</span><span class="err"> Bool) → not (not z) = z</span>
+</span><span id="__span-46-3"><a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="err">  := ind-Bool</span>
+</span><span id="__span-46-4"><a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="err">      ( </span><span class="p">\ </span>z <span class="err">→ not (not z) = z)</span>
+</span><span id="__span-46-5"><a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="err">      ( </span><span class="s">refl</span><span class="err">)</span>
+</span><span id="__span-46-6"><a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="err">      ( </span><span class="s">refl</span><span class="err">)</span>
+</span></code></pre></div>
+<p>There is a way to fix the proof, but we'll need to learn more about
+the identity types before we can do that.</p>
+<h2 id="natural-numbers">Natural numbers<a class="headerlink" href="#natural-numbers" title="Permanent link">&para;</a></h2>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:ℕ" id="define:ℕ" style="visibility: visible; position: relative; color: inherit">ℕ</a></span><span class="err"> : U</span>
+</span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:zero" id="define:zero" style="visibility: visible; position: relative; color: inherit">zero</a></span><span class="err"> : ℕ</span>
+</span><span id="__span-47-3"><a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:succ" id="define:succ" style="visibility: visible; position: relative; color: inherit">succ</a></span><span class="err"> </span><span class="p">(</span>n <span class="p">:</span><span class="err"> ℕ) : ℕ</span>
+</span><span id="__span-47-4"><a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a>
+</span><span id="__span-47-5"><a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:ind-ℕ" id="define:ind-ℕ" style="visibility: visible; position: relative; color: inherit">ind-ℕ</a></span>
+</span><span id="__span-47-6"><a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> ℕ → U)</span>
+</span><span id="__span-47-7"><a id="__codelineno-47-7" name="__codelineno-47-7" href="#__codelineno-47-7"></a><span class="err">  </span><span class="p">(</span>base <span class="p">:</span><span class="err"> C zero)</span>
+</span><span id="__span-47-8"><a id="__codelineno-47-8" name="__codelineno-47-8" href="#__codelineno-47-8"></a><span class="err">  </span><span class="p">(</span>step <span class="p">:</span><span class="err"> </span><span class="p">(</span>n <span class="p">:</span><span class="err"> ℕ) → C n → C (succ n))</span>
+</span><span id="__span-47-9"><a id="__codelineno-47-9" name="__codelineno-47-9" href="#__codelineno-47-9"></a><span class="err">  : </span><span class="p">(</span>n <span class="p">:</span><span class="err"> ℕ) → C n</span>
+</span><span id="__span-47-10"><a id="__codelineno-47-10" name="__codelineno-47-10" href="#__codelineno-47-10"></a>
+</span><span id="__span-47-11"><a id="__codelineno-47-11" name="__codelineno-47-11" href="#__codelineno-47-11"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:ind-ℕ-zero" id="define:ind-ℕ-zero" style="visibility: visible; position: relative; color: inherit">ind-ℕ-zero</a></span>
+</span><span id="__span-47-12"><a id="__codelineno-47-12" name="__codelineno-47-12" href="#__codelineno-47-12"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> ℕ → U)</span>
+</span><span id="__span-47-13"><a id="__codelineno-47-13" name="__codelineno-47-13" href="#__codelineno-47-13"></a><span class="err">  </span><span class="p">(</span>base <span class="p">:</span><span class="err"> C zero)</span>
+</span><span id="__span-47-14"><a id="__codelineno-47-14" name="__codelineno-47-14" href="#__codelineno-47-14"></a><span class="err">  </span><span class="p">(</span>step <span class="p">:</span><span class="err"> </span><span class="p">(</span>n <span class="p">:</span><span class="err"> ℕ) → C n → C (succ n))</span>
+</span><span id="__span-47-15"><a id="__codelineno-47-15" name="__codelineno-47-15" href="#__codelineno-47-15"></a><span class="err">  : ind-ℕ C base step zero = base</span>
+</span><span id="__span-47-16"><a id="__codelineno-47-16" name="__codelineno-47-16" href="#__codelineno-47-16"></a><span class="kr">#postulate</span><span class="p"> </span><span class="nf"><a href="#define:ind-ℕ-succ" id="define:ind-ℕ-succ" style="visibility: visible; position: relative; color: inherit">ind-ℕ-succ</a></span>
+</span><span id="__span-47-17"><a id="__codelineno-47-17" name="__codelineno-47-17" href="#__codelineno-47-17"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> ℕ → U)</span>
+</span><span id="__span-47-18"><a id="__codelineno-47-18" name="__codelineno-47-18" href="#__codelineno-47-18"></a><span class="err">  </span><span class="p">(</span>base <span class="p">:</span><span class="err"> C zero)</span>
+</span><span id="__span-47-19"><a id="__codelineno-47-19" name="__codelineno-47-19" href="#__codelineno-47-19"></a><span class="err">  </span><span class="p">(</span>step <span class="p">:</span><span class="err"> </span><span class="p">(</span>n <span class="p">:</span><span class="err"> ℕ) → C n → C (succ n))</span>
+</span><span id="__span-47-20"><a id="__codelineno-47-20" name="__codelineno-47-20" href="#__codelineno-47-20"></a><span class="err">  </span><span class="p">(</span>n <span class="p">:</span><span class="err"> ℕ)</span>
+</span><span id="__span-47-21"><a id="__codelineno-47-21" name="__codelineno-47-21" href="#__codelineno-47-21"></a><span class="err">  : ind-ℕ C base step (succ n) = step n (ind-ℕ C base step n)</span>
+</span></code></pre></div>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:rec-ℕ" id="define:rec-ℕ" style="visibility: visible; position: relative; color: inherit">rec-ℕ</a></span>
+</span><span id="__span-48-2"><a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-48-3"><a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="err">  </span><span class="p">(</span>base <span class="p">:</span><span class="err"> C)</span>
+</span><span id="__span-48-4"><a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="err">  </span><span class="p">(</span>step <span class="p">:</span><span class="err"> </span><span class="p">(</span>n <span class="p">:</span><span class="err"> ℕ) → C → C)</span>
+</span><span id="__span-48-5"><a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a><span class="err">  : ℕ → C</span>
+</span><span id="__span-48-6"><a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a><span class="err">  := ind-ℕ (</span><span class="p">\ </span>_ <span class="err">→ C) base step</span>
+</span></code></pre></div>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:double-ℕ" id="define:double-ℕ" style="visibility: visible; position: relative; color: inherit">double-ℕ</a></span>
+</span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="err">  : ℕ → ℕ</span>
+</span><span id="__span-49-3"><a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="err">  := rec-ℕ ℕ zero (</span><span class="p">\ </span>_ m <span class="err">→ succ (succ m))</span>
+</span></code></pre></div>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:compute-ind-ℕ-zero" id="define:compute-ind-ℕ-zero" style="visibility: visible; position: relative; color: inherit">compute-ind-ℕ-zero</a></span>
+</span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> ℕ → U)</span>
+</span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="err">  </span><span class="p">(</span>base <span class="p">:</span><span class="err"> C zero)</span>
+</span><span id="__span-50-4"><a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="err">  </span><span class="p">(</span>step <span class="p">:</span><span class="err"> </span><span class="p">(</span>n <span class="p">:</span><span class="err"> ℕ) → C n → C (succ n))</span>
+</span><span id="__span-50-5"><a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a><span class="err">  : C zero</span>
+</span><span id="__span-50-6"><a id="__codelineno-50-6" name="__codelineno-50-6" href="#__codelineno-50-6"></a><span class="err">  := base</span>
+</span><span id="__span-50-7"><a id="__codelineno-50-7" name="__codelineno-50-7" href="#__codelineno-50-7"></a>
+</span><span id="__span-50-8"><a id="__codelineno-50-8" name="__codelineno-50-8" href="#__codelineno-50-8"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:compute-ind-ℕ-one" id="define:compute-ind-ℕ-one" style="visibility: visible; position: relative; color: inherit">compute-ind-ℕ-one</a></span>
+</span><span id="__span-50-9"><a id="__codelineno-50-9" name="__codelineno-50-9" href="#__codelineno-50-9"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> ℕ → U)</span>
+</span><span id="__span-50-10"><a id="__codelineno-50-10" name="__codelineno-50-10" href="#__codelineno-50-10"></a><span class="err">  </span><span class="p">(</span>base <span class="p">:</span><span class="err"> C zero)</span>
+</span><span id="__span-50-11"><a id="__codelineno-50-11" name="__codelineno-50-11" href="#__codelineno-50-11"></a><span class="err">  </span><span class="p">(</span>step <span class="p">:</span><span class="err"> </span><span class="p">(</span>n <span class="p">:</span><span class="err"> ℕ) → C n → C (succ n))</span>
+</span><span id="__span-50-12"><a id="__codelineno-50-12" name="__codelineno-50-12" href="#__codelineno-50-12"></a><span class="err">  : C (succ zero)</span>
+</span><span id="__span-50-13"><a id="__codelineno-50-13" name="__codelineno-50-13" href="#__codelineno-50-13"></a><span class="err">  := step zero (compute-ind-ℕ-zero C base step)</span>
+</span><span id="__span-50-14"><a id="__codelineno-50-14" name="__codelineno-50-14" href="#__codelineno-50-14"></a>
+</span><span id="__span-50-15"><a id="__codelineno-50-15" name="__codelineno-50-15" href="#__codelineno-50-15"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:compute-ind-ℕ-two" id="define:compute-ind-ℕ-two" style="visibility: visible; position: relative; color: inherit">compute-ind-ℕ-two</a></span>
+</span><span id="__span-50-16"><a id="__codelineno-50-16" name="__codelineno-50-16" href="#__codelineno-50-16"></a><span class="err">  </span><span class="p">(</span>C <span class="p">:</span><span class="err"> ℕ → U)</span>
+</span><span id="__span-50-17"><a id="__codelineno-50-17" name="__codelineno-50-17" href="#__codelineno-50-17"></a><span class="err">  </span><span class="p">(</span>base <span class="p">:</span><span class="err"> C zero)</span>
+</span><span id="__span-50-18"><a id="__codelineno-50-18" name="__codelineno-50-18" href="#__codelineno-50-18"></a><span class="err">  </span><span class="p">(</span>step <span class="p">:</span><span class="err"> </span><span class="p">(</span>n <span class="p">:</span><span class="err"> ℕ) → C n → C (succ n))</span>
+</span><span id="__span-50-19"><a id="__codelineno-50-19" name="__codelineno-50-19" href="#__codelineno-50-19"></a><span class="err">  : C (succ (succ zero))</span>
+</span><span id="__span-50-20"><a id="__codelineno-50-20" name="__codelineno-50-20" href="#__codelineno-50-20"></a><span class="err">  := step (succ zero) (compute-ind-ℕ-one C base step)</span>
+</span><span id="__span-50-21"><a id="__codelineno-50-21" name="__codelineno-50-21" href="#__codelineno-50-21"></a>
+</span><span id="__span-50-22"><a id="__codelineno-50-22" name="__codelineno-50-22" href="#__codelineno-50-22"></a><span class="nd">#compute</span><span class="err"> compute-ind-ℕ-two (</span><span class="p">\ </span>_ <span class="err">→ ℕ) zero (</span><span class="p">\ </span>_ m <span class="err">→ succ (succ m))</span>
+</span></code></pre></div>
 
 
 
