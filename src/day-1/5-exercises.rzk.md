@@ -21,14 +21,14 @@ Do the same for Σ-types.
 **Exercise 1.3.**
 Show that Σ-types are associative in the following sense:
 
-```{unchecked .rzk}
+```rzk
 #define reassoc-left-Σ
   ( A : U)
   ( B : A → U)
   ( C : (a : A) → B a → U)
   : (Σ (a : A), Σ (b : B a), C a b)
   → (Σ (ab : Σ (a : A), B a), C (pr₁ A B ab) (pr₂ A B ab))
-  := ???
+  := _exercise
 
 #define reassoc-right-Σ
   ( A : U)
@@ -36,7 +36,7 @@ Show that Σ-types are associative in the following sense:
   ( C : (a : A) → B a → U)
   : (Σ (ab : Σ (a : A), B a), C (pr₁ A B ab) (pr₂ A B ab))
   → (Σ (a : A), Σ (b : B a), C a b)
-  := ???
+  := _exercise
 
 #define assoc-left-Σ
   ( A : U)
@@ -44,7 +44,7 @@ Show that Σ-types are associative in the following sense:
   ( C : (a : A) → B a → U)
   ( abc : Σ (a : A), Σ (b : B a), C a b)
   : reassoc-right A B C (reassoc-left A B C abc) = abc
-  := ???
+  := _exercise
 
 #define assoc-right-Σ
   ( A : U)
@@ -52,7 +52,7 @@ Show that Σ-types are associative in the following sense:
   ( C : (a : A) → B a → U)
   ( abc : Σ (ab : Σ (a : A), B a), C (pr₁ A B ab) (pr₂ A B ab))
   : reassoc-left A B C (reassoc-left A B C abc) = abc
-  := ???
+  := _exercise
 ```
 
 ## Propositions as types
@@ -123,11 +123,11 @@ Consider the definitions of loop space and 2-loop space (HoTT Book Definition 2.
 **Exercise 1.10.**
 Formalize the proof of HoTT Book Theorem 2.1.6 (Eckmann-Hilton):
 
-```{unchecked .rzk}
+```rzk
 #define Eckmann-Hilton
   ( A : U)
   ( a : A)
   ( α β : Ω A a)
   : concat-Ω A a α β = concat-Ω A a β α
-  := ???
+  := _exercise
 ```
