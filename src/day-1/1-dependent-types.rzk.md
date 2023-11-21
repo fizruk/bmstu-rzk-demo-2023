@@ -237,8 +237,13 @@ for any `#!rzk x : A`.
   (z : prod A B)
   : (first z, second z) =_{prod A B} z
   := ind-prod A B
-      ( \ z → (first z, second z) =_{prod A B} z)
-      (\ a b → refl_{(a , b)})
+      ( \ z' → (first z', second z') =_{prod A B} z') -- C
+      ( \ a b → refl_{(a , b)})
+        -- C (a, b)
+        -- ≡ ( \ z' → (first z', second z') =_{prod A B} z') (a, b)
+        -- ≡ (first (a, b), second (a, b)) =_{prod A B} (a, b)
+        -- ≡ (a, second (a, b)) =_{prod A B} (a, b)
+        -- ≡ (a, b) =_{prod A B} (a, b)
       z
 ```
 
@@ -270,7 +275,7 @@ since it allows, for example, to prove the uniqueness principle:
   ( z : Unit)
   : unit =_{Unit} z
   := ind-Unit
-      ( \ z → unit =_{Unit} z)
+      ( \ z' → unit =_{Unit} z')
       ( refl_{unit})
       z
 ```
@@ -314,10 +319,11 @@ The first projection can be easily defined in terms of pattern matching:
 However, second projection requires some care. For instance, we might try this:
 
 ```{unchecked .rzk}
+-- NOTE: incorrect definition
 #define pr₂
   ( A : U)
   ( B : A → U)
-  : (Σ (a : A), B a) → B a
+  : (Σ (a : A), B a) → B a  -- ERROR!
   := \ (_ , b) → b
 ```
 
@@ -353,8 +359,9 @@ second projection slightly differently:
 #define pr₂'
   ( A : U)
   ( B : A → U)
-  : ((a, _) : total-type A B) → B a
-  := pr₂ A B
+  ( (a, b) : total-type A B)
+  : B a
+  := b
 ```
 
 ### Recursion and induction principles
@@ -433,11 +440,19 @@ If you still have issues formalizing it in Rzk, you may peek here:
 ??? abstract "Proof of the type theoretic axiom of choice"
 
     ```rzk
-    #define axiom-of-choice
-      : AxiomOfChoice
-      := \ _ B R k →
-        ( \ a → pr₁ B (R a) (k a)
-        , \ a → pr₂ B (R a) (k a))
+    #define ac : AxiomOfChoice
+      := \ A B R g → ( \ a → first (g a) , \ x → second (g x))
+      -- g    : (x : A) → Σ (y : B), R x y
+      -- x    : A
+      -- g x  : Σ (y : B), R x y
+      -- second (g x) : R x (first (g x))
+
+      -- f : A → B
+      -- f := \ a → first (g a)
+      --
+      -- R x (f x)
+      -- == R x ((\ a → first (g a)) x)
+      -- == R x (first (g x))
     ```
 
 ## Coproducts

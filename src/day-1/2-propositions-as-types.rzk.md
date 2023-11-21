@@ -42,9 +42,16 @@ We can prove the following de Morgan laws:
 ```rzk
 #define neg-prod
   (A B : U)
-  : prod (¬ A) (¬ B)
-  → ¬ (coprod A B)
-  := \ (na , nb) → rec-coprod A B Void na nb
+  : prod (¬ A) (¬ B)  →  ¬ (coprod A B)
+  -- : prod (A → Void) (B → Void) → (coprod A B → Void)
+  := \ ( na , nb ) → \ z →
+    rec-coprod A B Void
+      (\ a → na a)  -- case of (inl a)
+      (\ b → nb b)  -- case of (inr b)
+      z
+    -- na : A → Void
+    -- nb : B → Void
+    -- z : coprod A B
 ```
 
 > If not (A or B), then not A and not B.
@@ -54,7 +61,9 @@ We can prove the following de Morgan laws:
   (A B : U)
   : ¬ (coprod A B)
   → prod (¬ A) (¬ B)
-  := \ k → ( \ a → k (inl A B a) , \ b → k (inr A B b))
+  := \ k → ( \ a → k (inl A B a) , \ b → k (inr A B b) )
+  -- k : coprod A B → Void
+  -- a : A
 ```
 
 Not all classical tautologies are provable in HoTT:

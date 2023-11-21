@@ -270,23 +270,6 @@ Another common example of an extension type would be the `hom2` type of composit
       , t ≡ 1₂ ↦ g s ]
 ```
 
-## Equivalences
-
-```rzk
-#def is-equiv
-  ( A B : U)
-  ( f : A → B)
-  : U
-  := product
-      (Σ (s : B → A) , (b : B) → (f (s b) = b))
-      (Σ (r : B → A) , (a : A) → (r (f a) = a))
-
-#def Equiv
-  ( A B : U)
-  : U
-  := Σ (f : A → B) , (is-equiv A B f)
-```
-
 ## Cofibration composition
 
 A useful theorem about extension types says that
