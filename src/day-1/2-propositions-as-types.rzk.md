@@ -29,7 +29,8 @@ Exists x : A such that P(x) holds | $\sum_{x : A} P(x)$ | `#!rzk Σ (x : A), P x
   See Section 3.7 of HoTT Book for more details.
 
 ```rzk
-#define ¬ (A : U) : U
+#define ¬ (A : U)
+  : U
   := A → Void
 ```
 
@@ -41,13 +42,13 @@ We can prove the following de Morgan laws:
 
 ```rzk
 #define neg-prod
-  (A B : U)
+  ( A B : U)
   : prod (¬ A) (¬ B)  →  ¬ (coprod A B)
   -- : prod (A → Void) (B → Void) → (coprod A B → Void)
-  := \ ( na , nb ) → \ z →
+  := \ (na , nb) → \ z →
     rec-coprod A B Void
-      (\ a → na a)  -- case of (inl a)
-      (\ b → nb b)  -- case of (inr b)
+      ( \ a → na a)  -- case of (inl a)
+      ( \ b → nb b)  -- case of (inr b)
       z
     -- na : A → Void
     -- nb : B → Void
@@ -58,10 +59,10 @@ We can prove the following de Morgan laws:
 
 ```rzk
 #define neg-coprod
-  (A B : U)
+  ( A B : U)
   : ¬ (coprod A B)
   → prod (¬ A) (¬ B)
-  := \ k → ( \ a → k (inl A B a) , \ b → k (inr A B b) )
+  := \ k → (\ a → k (inl A B a) , \ b → k (inr A B b))
   -- k : coprod A B → Void
   -- a : A
 ```
@@ -79,9 +80,9 @@ Not all classical tautologies are provable in HoTT:
 
 ```rzk
 #define forall-prod
-  (A : U)
-  (P Q : A → U)
+  ( A : U)
+  ( P Q : A → U)
   : ((x : A) → prod (P x) (Q x))
   → prod ((x : A) → P x) ((x : A) → Q x)
-  := \ k → ( \ x → first (k x) , \ x → second (k x))
+  := \ k → (\ x → first (k x) , \ x → second (k x))
 ```

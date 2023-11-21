@@ -9,8 +9,8 @@ as point-wise equality:
 
 ```rzk
 #define homotopy
-  (A B : U)
-  (f g : A → B)
+  ( A B : U)
+  ( f g : A → B)
   : U
   := (x : A) → f x = g x
 ```
@@ -20,19 +20,19 @@ is an _equivalence_ if it has both a retraction (left inverse) and a section (ri
 
 ```rzk
 #define is-equiv
-  (A B : U)
-  (f : A → B)
+  ( A B : U)
+  ( f : A → B)
   : U
   := prod
-      (Σ (r : B → A), homotopy A A (\ a → r (f a)) (identity A))
-      (Σ (s : B → A), homotopy B B (\ b → f (s b)) (identity B))
+      ( Σ (r : B → A), homotopy A A (\ a → r (f a)) (identity A))
+      ( Σ (s : B → A), homotopy B B (\ b → f (s b)) (identity B))
 ```
 
 Two types `#!rzk A` and `#!rzk B` are equivalent if there exists an equivalence `#!rzk f : A → B`:
 
 ```rzk
 #define Equiv
-  (A B : U)
+  ( A B : U)
   : U
   := Σ (f : A → B), is-equiv A B f
 ```
@@ -41,10 +41,10 @@ An example of an equivalence is an identity function:
 
 ```rzk
 #define is-equiv-identity
-  (A : U)
+  ( A : U)
   : is-equiv A A (identity A)
-  := ( (identity A , \ _ → refl)
-     , (identity A , \ _ → refl) )
+  := ((identity A , \ _ → refl)
+     , (identity A , \ _ → refl))
 ```
 
 We can show that `#!rzk Equiv` is an equivalence relation:
@@ -52,7 +52,7 @@ We can show that `#!rzk Equiv` is an equivalence relation:
 ```rzk
 -- Equiv is reflexive
 #define Equiv-identity
-  (A : U)
+  ( A : U)
   : Equiv A A
   := (identity A, is-equiv-identity A)
 
@@ -74,20 +74,20 @@ is equivalence to equivalence of types[^1]:
 #define UnivalenceAxiom
   : U
   :=
-    (A : U)
+    ( A : U)
   → (B : U)
   → Equiv (A = B) (Equiv A B)
 
 #postulate ua : UnivalenceAxiom
 
 #define inv
-  (A B : U)
+  ( A B : U)
   : Equiv A B → (B → A)
   := \ (f, ((r, er), (s, es))) → r
 
 #define eq-from-Equiv
-  (A B : U)
+  ( A B : U)
   : Equiv A B → (A = B)
   := inv (A = B) (Equiv A B)
-        (ua A B)
+        ( ua A B)
 ```

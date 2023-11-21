@@ -26,7 +26,8 @@ between `a` and `b`.
 Rzk can figure out the type indices for identity types and we can omit them:
 
 ```rzk
-#define FunExt₁ : U
+#define FunExt₁
+  : U
   := (A : U) → (B : U)
     → (f : A → B) → (g : A → B)
     → ((x : A) → f x = g x)
@@ -38,8 +39,8 @@ is the proof by reflexivity. For example,
 
 ```rzk
 #define identity-x-eq-x
-  (A : U)
-  (x : A)
+  ( A : U)
+  ( x : A)
   : (identity A x = x)
   := refl_{x : A}
 ```
@@ -54,11 +55,11 @@ which we can define via the built-in version of it, `#!rzk idJ`:
 
 ```rzk
 #define ind-path
-  (A : U)
-  (a : A)
-  (C : (x : A) -> (a = x) -> U)
-  (d : C a refl)
-  (b : A)
+  ( A : U)
+  ( a : A)
+  ( C : (x : A) → (a = x) → U)
+  ( d : C a refl)
+  ( b : A)
   : (p : a = b) → C b p
   := \ p → idJ (A, a, C, d, b, p)
 ```
@@ -68,8 +69,8 @@ by induction on the argument of type `a = b`:
 
 ```rzk
 #define inverse
-  (A : U)
-  (a b : A)
+  ( A : U)
+  ( a b : A)
   : (a = b) → (b = a)
   := ind-path A a (\ x _ → x = a) refl b
 ```
@@ -112,9 +113,9 @@ using `#!rzk Σ`-types:
 
 ```rzk
 #define preimage
-  (A B : U)
-  (f : A → B)
-  (y : B)
+  ( A B : U)
+  ( f : A → B)
+  ( y : B)
   : U
   := Σ (x : A), (f x = y)
 ```

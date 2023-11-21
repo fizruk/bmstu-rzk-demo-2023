@@ -16,29 +16,29 @@ and unital (w.r.t. `#!rzk identity`).
 
     ```rzk
     #define compose
-      (A B C : U)
-      (f : A → B)
-      (g : B → C)
+      ( A B C : U)
+      ( f : A → B)
+      ( g : B → C)
       : A → C
       := \ x → g (f x)
 
     #define compose-assoc
-      (A B C D : U)
-      (f : A → B)
-      (g : B → C)
-      (h : C → D)
+      ( A B C D : U)
+      ( f : A → B)
+      ( g : B → C)
+      ( h : C → D)
       : compose A B D f (compose B C D g h) = compose A C D (compose A B C f g) h
       := refl
 
     #define compose-left-unit
-      (A B : U)
-      (f : A → B)
+      ( A B : U)
+      ( f : A → B)
       : compose A B B f (identity B) = f
       := refl
 
     #define compose-right-unit
-      (A B : U)
-      (f : A → B)
+      ( A B : U)
+      ( f : A → B)
       : compose A A B (identity A) f = f
       := refl
     ```
@@ -63,7 +63,7 @@ Show that Σ-types are associative in the following sense:
     =_{x = u}
     concat A x z u (concat A x y z p q) r
   := ind-path A x (\ w p →
-      (q : w = z)
+      ( q : w = z)
       → (r : z = u)
       → concat A x w u p (concat A w z u q r)
       =_{x = u}
@@ -148,21 +148,21 @@ Show that both proofs are equal.
 
 ```rzk
 #define path-inv₁
-  (A : U)
-  (x y : A)
+  ( A : U)
+  ( x y : A)
   : (x = y) → (y = x)
   := ind-path' A (\ a b _ → b = a) (\ _ → refl) x y
 
 #define path-inv₂
-  (A : U)
-  (x y : A)
+  ( A : U)
+  ( x y : A)
   : (x = y) → (y = x)
   := ind-path A x (\ w _ → w = x) refl y
 
 #define eq-path-inv₁-path-inv₂
-  (A : U)
-  (x y : A)
-  (p : x = y)
+  ( A : U)
+  ( x y : A)
+  ( p : x = y)
   : path-inv₁ A x y p = path-inv₂ A x y p
   := refl
 ```
@@ -175,8 +175,8 @@ Consider a third proof and show that it is equal to the other two proofs:
 ```rzk
 -- a different proof for transitivity
 #define concat₃
-  (A : U)
-  (x y z : A)
+  ( A : U)
+  ( x y z : A)
   : (x = y) → (y = z) → (x = z)
   := \ p → ind-path A y (\ w _ → x = w) p z
 ```

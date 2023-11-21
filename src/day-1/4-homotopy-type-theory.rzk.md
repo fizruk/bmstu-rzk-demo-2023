@@ -13,9 +13,9 @@ and `refl` might not be the only proof of equality!
 
 ```{ unchecked .rzk title="Type Error!" }
 #define does-not-typecheck
-  (A : U)
-  (x : A)
-  (p : x = x)
+  ( A : U)
+  ( x : A)
+  ( p : x = x)
   : p = refl
   := refl -- path induction on p also cannot work!
 ```

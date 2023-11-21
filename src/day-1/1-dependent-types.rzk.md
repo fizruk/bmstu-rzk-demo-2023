@@ -23,7 +23,7 @@ consider the identity function:
 
 ```rzk
 #define identity
-  : ( A : U) → (x : A) → A
+  : (A : U) → (x : A) → A
   := \ A x → x
 ```
 
@@ -33,7 +33,7 @@ without providing its name:
 
 ```rzk
 #define identity₁
-  : ( A : U) → A → A
+  : (A : U) → A → A
   := \ A x → x
 ```
 
@@ -66,7 +66,7 @@ the one that swaps the arguments of another function:
 #define swap
   ( A B C : U)
   : (A → B → C) → (B → A → C)
-  := \ f → \ b a -> f a b
+  := \ f → \ b a → f a b
 ```
 
 ## Product types
@@ -233,8 +233,8 @@ for any `#!rzk x : A`.
 
 ```rzk
 #define uniq-prod
-  (A B : U)
-  (z : prod A B)
+  ( A B : U)
+  ( z : prod A B)
   : (first z, second z) =_{prod A B} z
   := ind-prod A B
       ( \ z' → (first z', second z') =_{prod A B} z') -- C
@@ -251,8 +251,8 @@ Since in Rzk the uniqueness principle is builtin, a simpler proof also works:
 
 ```rzk
 #define uniq-prod'
-  (A B : U)
-  (z : prod A B)
+  ( A B : U)
+  ( z : prod A B)
   : (first z, second z) =_{prod A B} z
   := refl_{z} -- works in Rzk, not in HoTT Book, since in Rzk we have (first z, second z) ≡ z
 ```
@@ -470,7 +470,7 @@ For example, an empty type can be postulated as follows:
 ```rzk
 #postulate Void : U
 #postulate ind-Void
-  (C : Void → U)
+  ( C : Void → U)
   : (z : Void) → C z
 ```
 
@@ -481,9 +481,9 @@ which we can define in terms of `#!rzk ind-Void`:
 
 ```rzk
 #define rec-Void
-  (C : U)
+  ( C : U)
   : Void → C
-  := ind-Void (\_ → C)
+  := ind-Void (\ _ → C)
 ```
 
 ### Postulating the coproduct type
@@ -492,7 +492,7 @@ Similarly, we can postulate the coproduct:
 
 ```rzk
 #postulate coprod
-  (A B : U)
+  ( A B : U)
   : U
 ```
 
@@ -501,10 +501,10 @@ inject a term from `#!rzk A` or a term of `#!rzk B`:
 
 ```rzk
 #postulate inl
-  (A B : U)
+  ( A B : U)
   : A → coprod A B
 #postulate inr
-  (A B : U)
+  ( A B : U)
   : B → coprod A B
 ```
 
@@ -513,10 +513,10 @@ one for the left case and one for the right:
 
 ```rzk
 #postulate ind-coprod
-  (A B : U)
-  (C : coprod A B → U)
-  (l : (a : A) → C (inl A B a))
-  (r : (b : B) → C (inr A B b))
+  ( A B : U)
+  ( C : coprod A B → U)
+  ( l : (a : A) → C (inl A B a))
+  ( r : (b : B) → C (inr A B b))
   : (z : coprod A B) → C z
 ```
 
@@ -526,19 +526,19 @@ However, in Rzk, we can only postulate _propositional_ computational rules:
 
 ```rzk
 #postulate ind-coprod-inl
-  (A B : U)
-  (C : coprod A B → U)
-  (l : (a : A) → C (inl A B a))
-  (r : (b : B) → C (inr A B b))
-  (a : A)
+  ( A B : U)
+  ( C : coprod A B → U)
+  ( l : (a : A) → C (inl A B a))
+  ( r : (b : B) → C (inr A B b))
+  ( a : A)
   : ind-coprod A B C l r (inl A B a) = l a
 
 #postulate ind-coprod-inr
-  (A B : U)
-  (C : coprod A B → U)
-  (l : (a : A) → C (inl A B a))
-  (r : (b : B) → C (inr A B b))
-  (b : B)
+  ( A B : U)
+  ( C : coprod A B → U)
+  ( l : (a : A) → C (inl A B a))
+  ( r : (b : B) → C (inr A B b))
+  ( b : B)
   : ind-coprod A B C l r (inr A B b) = r b
 ```
 
@@ -547,10 +547,10 @@ as a special case of induction:
 
 ```rzk
 #define rec-coprod
-  (A B : U)
-  (C : U)
-  (l : A → C)
-  (r : B → C)
+  ( A B : U)
+  ( C : U)
+  ( l : A → C)
+  ( r : B → C)
   : coprod A B → C
   := ind-coprod A B (\ _ → C) l r
 ```
@@ -562,23 +562,23 @@ we have to provide some intermediate types explicitly:
 
 ```rzk
 #define uniq-coprod
-  (A B : U)
-  (z : coprod A B)
+  ( A B : U)
+  ( z : coprod A B)
   : coprod
-      (Σ (a : A), inl A B a = z)
-      (Σ (b : B), inr A B b = z)
+      ( Σ (a : A), inl A B a = z)
+      ( Σ (b : B), inr A B b = z)
   := ind-coprod A B
       ( \ z' → coprod
-          (Σ (a : A), inl A B a = z')
-          (Σ (b : B), inr A B b = z'))
+          ( Σ (a : A), inl A B a = z')
+          ( Σ (b : B), inr A B b = z'))
       ( \ a' → inl
-          (Σ (a : A), (inl A B a = inl A B a'))
-          (Σ (b : B), (inr A B b = inl A B a'))
-          (a' , refl))
+          ( Σ (a : A), (inl A B a = inl A B a'))
+          ( Σ (b : B), (inr A B b = inl A B a'))
+          ( a' , refl))
       ( \ b' → inr
-          (Σ (a : A), (inl A B a = inr A B b'))
-          (Σ (b : B), (inr A B b = inr A B b'))
-          (b' , refl))
+          ( Σ (a : A), (inl A B a = inr A B b'))
+          ( Σ (b : B), (inr A B b = inr A B b'))
+          ( b' , refl))
       z
 ```
 
@@ -592,39 +592,39 @@ we have to provide some intermediate types explicitly:
 
 ```rzk
 #postulate ind-Bool
-  (C : Bool → U)
-  (f : C false)
-  (t : C true)
+  ( C : Bool → U)
+  ( f : C false)
+  ( t : C true)
   : (z : Bool) → C z
 ```
 
 ```rzk
 #postulate ind-Bool-false
-  (C : Bool → U)
-  (f : C false)
-  (t : C true)
+  ( C : Bool → U)
+  ( f : C false)
+  ( t : C true)
   : ind-Bool C f t false = f
 #postulate ind-Bool-true
-  (C : Bool → U)
-  (f : C false)
-  (t : C true)
+  ( C : Bool → U)
+  ( f : C false)
+  ( t : C true)
   : ind-Bool C f t true = t
 ```
 
 ```rzk
 #define rec-Bool
-  (C : U)
-  (f t : C)
+  ( C : U)
+  ( f t : C)
   : Bool → C
   := ind-Bool (\ _ → C) f t
 ```
 
 ```rzk
 #define uniq-Bool
-  (z : Bool)
+  ( z : Bool)
   : coprod (z = false) (z = true)
   := ind-Bool
-      ( \ z' -> coprod (z' = false) (z' = true))
+      ( \ z' → coprod (z' = false) (z' = true))
       ( inl (false = false) (false = true) refl)
       ( inr (true = false) (true = true) refl)
       z
@@ -660,29 +660,29 @@ the identity types before we can do that.
 #postulate succ (n : ℕ) : ℕ
 
 #postulate ind-ℕ
-  (C : ℕ → U)
-  (base : C zero)
-  (step : (n : ℕ) → C n → C (succ n))
+  ( C : ℕ → U)
+  ( base : C zero)
+  ( step : (n : ℕ) → C n → C (succ n))
   : (n : ℕ) → C n
 
 #postulate ind-ℕ-zero
-  (C : ℕ → U)
-  (base : C zero)
-  (step : (n : ℕ) → C n → C (succ n))
+  ( C : ℕ → U)
+  ( base : C zero)
+  ( step : (n : ℕ) → C n → C (succ n))
   : ind-ℕ C base step zero = base
 #postulate ind-ℕ-succ
-  (C : ℕ → U)
-  (base : C zero)
-  (step : (n : ℕ) → C n → C (succ n))
-  (n : ℕ)
+  ( C : ℕ → U)
+  ( base : C zero)
+  ( step : (n : ℕ) → C n → C (succ n))
+  ( n : ℕ)
   : ind-ℕ C base step (succ n) = step n (ind-ℕ C base step n)
 ```
 
 ```rzk
 #define rec-ℕ
-  (C : U)
-  (base : C)
-  (step : (n : ℕ) → C → C)
+  ( C : U)
+  ( base : C)
+  ( step : (n : ℕ) → C → C)
   : ℕ → C
   := ind-ℕ (\ _ → C) base step
 ```
@@ -695,23 +695,23 @@ the identity types before we can do that.
 
 ```rzk
 #define compute-ind-ℕ-zero
-  (C : ℕ → U)
-  (base : C zero)
-  (step : (n : ℕ) → C n → C (succ n))
+  ( C : ℕ → U)
+  ( base : C zero)
+  ( step : (n : ℕ) → C n → C (succ n))
   : C zero
   := base
 
 #define compute-ind-ℕ-one
-  (C : ℕ → U)
-  (base : C zero)
-  (step : (n : ℕ) → C n → C (succ n))
+  ( C : ℕ → U)
+  ( base : C zero)
+  ( step : (n : ℕ) → C n → C (succ n))
   : C (succ zero)
   := step zero (compute-ind-ℕ-zero C base step)
 
 #define compute-ind-ℕ-two
-  (C : ℕ → U)
-  (base : C zero)
-  (step : (n : ℕ) → C n → C (succ n))
+  ( C : ℕ → U)
+  ( base : C zero)
+  ( step : (n : ℕ) → C n → C (succ n))
   : C (succ (succ zero))
   := step (succ zero) (compute-ind-ℕ-one C base step)
 
