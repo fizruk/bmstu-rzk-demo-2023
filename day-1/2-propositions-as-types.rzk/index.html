@@ -686,8 +686,9 @@
 </tr>
 </tbody>
 </table>
-<div class="language-rzk highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:¬" id="define:¬" style="visibility: visible; position: relative; color: inherit">¬</a></span><span class="err"> </span><span class="p">(</span>A <span class="p">:</span><span class="err"> U) : U</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="err">  := A → Void</span>
+<div class="language-rzk highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:¬" id="define:¬" style="visibility: visible; position: relative; color: inherit">¬</a></span><span class="err"> </span><span class="p">(</span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="err">  : U</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="err">  := A → Void</span>
 </span></code></pre></div>
 <h2 id="de-morgan-laws">De Morgan laws<a class="headerlink" href="#de-morgan-laws" title="Permanent link">&para;</a></h2>
 <p>We can prove the following de Morgan laws:</p>
@@ -695,19 +696,28 @@
 <p>If not A and not B, then not (A or B).</p>
 </blockquote>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:neg-prod" id="define:neg-prod" style="visibility: visible; position: relative; color: inherit">neg-prod</a></span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="err">  : prod (¬ A) (¬ B)</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="err">  → ¬ (coprod A B)</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="err">  := \ (na , nb) → rec-coprod A B Void na nb</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="err">  </span><span class="p">( </span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="err">  : prod (¬ A) (¬ B)  →  ¬ (coprod A B)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="err">  </span><span class="c">-- : prod (A → Void) (B → Void) → (coprod A B → Void)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="err">  := \ (na , nb) → </span><span class="p">\ </span>z <span class="err">→</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="err">    rec-coprod A B Void</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="err">      ( </span><span class="p">\ </span>a <span class="err">→ na a)  </span><span class="c">-- case of (inl a)</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="err">      ( </span><span class="p">\ </span>b <span class="err">→ nb b)  </span><span class="c">-- case of (inr b)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="err">      z</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="err">    </span><span class="c">-- na : A → Void</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="err">    </span><span class="c">-- nb : B → Void</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="err">    </span><span class="c">-- z : coprod A B</span>
 </span></code></pre></div>
 <blockquote>
 <p>If not (A or B), then not A and not B.</p>
 </blockquote>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:neg-coprod" id="define:neg-coprod" style="visibility: visible; position: relative; color: inherit">neg-coprod</a></span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="err">  </span><span class="p">(</span>A B <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="err">  </span><span class="p">( </span>A B <span class="p">:</span><span class="err"> U)</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="err">  : ¬ (coprod A B)</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="err">  → prod (¬ A) (¬ B)</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="err">  := </span><span class="p">\ </span>k <span class="err">→ ( </span><span class="p">\ </span>a <span class="err">→ k (inl A B a) , </span><span class="p">\ </span>b <span class="err">→ k (inr A B b))</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="err">  := </span><span class="p">\ </span>k <span class="err">→ (</span><span class="p">\ </span>a <span class="err">→ k (inl A B a) , </span><span class="p">\ </span>b <span class="err">→ k (inr A B b))</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="err">  </span><span class="c">-- k : coprod A B → Void</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="err">  </span><span class="c">-- a : A</span>
 </span></code></pre></div>
 <p>Not all classical tautologies are provable in HoTT:</p>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:classical-tauto" id="define:classical-tauto" style="visibility: visible; position: relative; color: inherit">classical-tauto</a></span>
@@ -719,11 +729,11 @@
 <p>If for all x : A, P(x) and Q(x) then (for all x : A, P(x)) and (for all x : A, Q(x)).</p>
 </blockquote>
 <div class="language-rzk highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kr">#define</span><span class="p"> </span><span class="nf"><a href="#define:forall-prod" id="define:forall-prod" style="visibility: visible; position: relative; color: inherit">forall-prod</a></span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="err">  </span><span class="p">(</span>A <span class="p">:</span><span class="err"> U)</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="err">  </span><span class="p">(</span>P Q <span class="p">:</span><span class="err"> A → U)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="err">  </span><span class="p">( </span>A <span class="p">:</span><span class="err"> U)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="err">  </span><span class="p">( </span>P Q <span class="p">:</span><span class="err"> A → U)</span>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="err">  : </span><span class="p">(</span>(x <span class="p">:</span><span class="err"> A) → prod (P x) (Q x))</span>
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="err">  → prod </span><span class="p">(</span>(x <span class="p">:</span><span class="err"> A) → P x) </span><span class="p">(</span>(x <span class="p">:</span><span class="err"> A) → Q x)</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="err">  := </span><span class="p">\ </span>k <span class="err">→ ( </span><span class="p">\ </span>x <span class="err">→ </span><span class="s">first</span><span class="err"> (k x) , </span><span class="p">\ </span>x <span class="err">→ </span><span class="s">second</span><span class="err"> (k x))</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="err">  := </span><span class="p">\ </span>k <span class="err">→ (</span><span class="p">\ </span>x <span class="err">→ </span><span class="s">first</span><span class="err"> (k x) , </span><span class="p">\ </span>x <span class="err">→ </span><span class="s">second</span><span class="err"> (k x))</span>
 </span></code></pre></div>
 <div class="footnote">
 <hr />
